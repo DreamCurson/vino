@@ -5,6 +5,7 @@ use App\Models\Bouteille;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BouteilleController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +61,13 @@ function trouverAttribut(array $attributes, string $nomRecherche): ?string
 Route::get('/', function () {
   return view('welcome');
 });
+
+/**
+ * Routes pour la connexion.
+ */
+Route::get('/connexion', [AuthController::class, 'create'])->name('connexion');
+Route::post('/connexion', [AuthController::class, 'store'])->name('auth.store');
+Route::get('/deconnexion', [AuthController::class, 'destroy'])->name('deconnexion');
 
 /**
  * Route de test temporaire pour valider la connexion à l'API SAQ
