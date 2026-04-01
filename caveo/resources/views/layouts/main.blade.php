@@ -39,7 +39,7 @@
                 <p class="text-base font-roboto font-medium">Ajouter</p>
             </a>
 
-            <a href="#" class="flex flex-col items-center gap-1 px-3 py-1">
+            <a href="{{ route('catalogue.index') }}" class="flex flex-col items-center gap-1 px-3 py-1">
                 <img src="{{ asset('images/icons/loop-dark.svg') }}" alt="Explorer" class="w-6 h-6">
                 <p class="text-base font-roboto font-medium">Explorer</p>
             </a>
