@@ -7,11 +7,13 @@ use App\Models\Role;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BouteilleController;
+use feature-inscription-utilisateur;
 use App\Http\Requests\InscriptionRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\CatalogueController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,7 +68,12 @@ function trouverAttribut(array $attributes, string $nomRecherche): ?string
  */
 Route::get('/', function () {
   return view('welcome');
-});
+})->name('accueil');
+
+/**
+ * Route vers le catalogue
+ */
+Route::get('/catalogue', [CatalogueController::class, 'index'])->name('catalogue.index');
 
 /**
  * Afficher le formulaire d'inscription (UI seulement) et traiter la soumission.
