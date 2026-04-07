@@ -24,6 +24,7 @@ class Bouteille extends Model
         'image',
         'pastille_gout',
         'est_saq',
+        'description',
     ];
 
     public function getImagePastilleAttribute()

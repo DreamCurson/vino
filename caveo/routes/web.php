@@ -70,7 +70,11 @@ Route::get('/catalogue', [CatalogueController::class, 'index'])->name('catalogue
 /**
  * Route vers la fiche détail
  */
-Route::get('/bouteilles/{bouteille}', [BouteilleController::class, 'show'])->name('bouteilles.show');
+Route::get('/bouteilles/{bouteille}', [BouteilleController::class, 'show'])
+  ->name('bouteilles.show')
+  ->missing(function(){
+    return redirect('/catalogue');
+});
 
 /**
  * Route de test temporaire pour valider la connexion à l'API SAQ
