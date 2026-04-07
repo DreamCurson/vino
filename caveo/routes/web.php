@@ -52,9 +52,10 @@ Route::middleware('auth')->group(function() {
   Route::get('/bouteilles/{bouteille}', [BouteilleController::class, 'show'])
     ->name('bouteilles.show')
     ->missing(function(){
-      return redirect('/catalogue');
+      return redirect()->route('catalogue.index')
+        ->with('status', 'Cette bouteille est introuvable.');
+    });
   });
-});
 
 /**
  * Route permettant à l'administrateur de déclencher

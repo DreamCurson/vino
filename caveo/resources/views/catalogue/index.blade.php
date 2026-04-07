@@ -3,19 +3,28 @@
 @section('content')
 
     <script type="module" src="{{ asset('js/filtre.js') }}"></script>
+    <script type="module" src="{{ asset('js/message-flash.js') }}"></script>
+
+    <!-- Message lorsqu'un id ne retourne aucune bouteille -->
+    @if (session('status'))
+        <div id="flash-alert" role="alert" aria-live="polite"
+            class="mb-4 flex items-start gap-3 bg-red-50 border border-red-200 text-red-800 rounded-md p-3">
+            <div class="flex-1 text-sm">{{ session('status') }}</div>
+        </div>
+    @endif
 
     <div class="m-4">
         <!-- 
-            Le formulaire envoie une requête GET vers l'URL actuelle.
-            url()->current() permet de rester sur la même page (index du catalogue)
-            et d'ajouter simplement le paramètre ?recherche=... dans l'URL.
+                                    Le formulaire envoie une requête GET vers l'URL actuelle.
+                                    url()->current() permet de rester sur la même page (index du catalogue)
+                                    et d'ajouter simplement le paramètre ?recherche=... dans l'URL.
 
-            Exemple : /catalogue?recherche=vin
+                                    Exemple : /catalogue?recherche=vin
 
-            Avantages :
-            - Permet de partager l’URL avec la recherche
-            - Évite de créer une route spécifique pour la recherche
-        -->
+                                    Avantages :
+                                    - Permet de partager l’URL avec la recherche
+                                    - Évite de créer une route spécifique pour la recherche
+                                -->
         <form method="GET" action="{{ url()->current() }}" class="flex gap-2">
             <input type="text" name="recherche" value="{{ request('recherche') }}" placeholder="Rechercher une bouteille..."
                 class="border rounded px-3 py-2 w-full">
