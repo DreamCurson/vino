@@ -14,6 +14,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\CatalogueController;
+use App\Http\Controllers\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,37 +95,13 @@ function trouverAttribut(array $attributes, string $nomRecherche): ?string
 
 
 /*
- * Afficher le formulaire d'inscription (UI seulement) et traiter la soumission.
- * La page utilise le layout `layouts.main` (header/footer inchangés).
+ Routes pour l'inscription.
  */
 Route::get('/inscription', function () {
   return view('auth.inscription');
 })->name('inscription.form');
 
-Route::post('/inscription', function (InscriptionRequest $request) {
-  $data = $request->validated();
-  // Validation : gérée par `InscriptionRequest`
-  // Créer l'utilisateur dans la table `utilisateurs`
-  $utilisateur = DB::transaction(function () use ($data) {
-    // Récupère l'id du rôle 'user' (si absent, on suppose id=2 par défaut)
-    $roleId = Role::where('nom', 'user')->value('id') ?? 2;
-
-    return Utilisateur::create([
-      'prenom' => $data['prenom'] ?? '',
-      'nom' => $data['nom'] ?? '',
-      'email' => $data['courriel'],
-      'mot_de_passe' => Hash::make($data['mot_de_passe']),
-      'id_role' => $roleId,
-    ]);
-  });
-
-  // Déclenche l'événement Laravel `Registered` puis connecte l'utilisateur.
-  event(new Registered($utilisateur));
-  Auth::login($utilisateur);
-
-  // Renvoyer sur la même page et afficher une alerte de succès
-  return redirect()->intended('/accueil')->with('status', 'Compte créé avec succès.');
-})->name('inscription.submit');
+Route::post('/inscription', [RegisterController::class, 'store'])->name('inscription.submit');
 
 /**
  * Routes pour la connexion.
