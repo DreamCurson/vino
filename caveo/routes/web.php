@@ -2,9 +2,19 @@
 
 use App\Http\Controllers\Admin\InventaireSaqController;
 use App\Models\Bouteille;
+use App\Models\Utilisateur;
+use App\Models\Role;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BouteilleController;
+use App\Http\Controllers\AuthController;
+use App\Http\Requests\InscriptionRequest;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\CatalogueController;
+use App\Http\Controllers\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +28,35 @@ use App\Http\Controllers\BouteilleController;
 | - de tester manuellement la connexion à l'API SAQ via une route temporaire.
 |
 */
+
+
+/**
+ * Routes en étant connecté
+ */
+Route::middleware('auth')->group(function() {
+
+  /**
+ * Route de la page d'accueil.
+ */
+  Route::get('/accueil', function () {
+    return view('welcome');
+  })->name('accueil');
+
+  /**
+ * Route vers le catalogue
+ */
+  Route::get('/catalogue', [CatalogueController::class, 'index'])->name('catalogue.index');
+
+  /**
+ * Route vers la fiche détail
+ */
+  Route::get('/bouteilles/{bouteille}', [BouteilleController::class, 'show'])
+    ->name('bouteilles.show')
+    ->missing(function(){
+      return redirect()->route('catalogue.index')
+        ->with('status', 'Cette bouteille est introuvable.');
+    });
+  });
 
 /**
  * Route permettant à l'administrateur de déclencher
@@ -54,12 +93,22 @@ function trouverAttribut(array $attributes, string $nomRecherche): ?string
   return null;
 }
 
-/**
- * Route de la page d'accueil.
+
+/*
+ Routes pour l'inscription.
  */
-Route::get('/', function () {
-  return view('welcome');
-});
+Route::get('/inscription', function () {
+  return view('auth.inscription');
+})->name('inscription.form');
+
+Route::post('/inscription', [RegisterController::class, 'store'])->name('inscription.submit');
+
+/**
+ * Routes pour la connexion.
+ */
+Route::get('/', [AuthController::class, 'create'])->name('connexion');
+Route::post('/', [AuthController::class, 'store'])->name('auth.store');
+Route::get('/deconnexion', [AuthController::class, 'destroy'])->name('deconnexion');
 
 /**
  * Route de test temporaire pour valider la connexion à l'API SAQ
