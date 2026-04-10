@@ -1,8 +1,9 @@
 # vino
-Branche feature inscription utilisateur
-Branche feature catalogue
 
+Branche feature catalogue
 Branche feature connexion utilisateur
+Branche feature inscription utilisateur
+Branche feature fiche détail bouteille
 
 Branche feature cellier
 
