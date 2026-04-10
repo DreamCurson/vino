@@ -27,25 +27,32 @@
             @endif
         </div>
 
-        <div class="mt-4 flex items-center gap-3">
+        {{-- Actions cellier --}}
+        <div class="mt-4 flex flex-wrap gap-y-2">
             <a href="{{ route('celliers.index') }}"
                 class="px-4 py-2 bg-[#A83248] text-white rounded text-sm">
                 Voir les celliers
             </a>
 
-            <a href="{{ route('celliers.edit', $cellier) }}"
-                class="text-xs text-gray-500 hover:text-gray-700">
-                Modifier
-            </a>
+            <div class="w-full flex items-center gap-4">
+                <a href="{{ route('celliers.edit', $cellier) }}"
+                    class="text-xs leading-none text-gray-500 hover:text-gray-700">
+                    Modifier
+                </a>
 
-            <form method="POST" action="{{ route('celliers.destroy', $cellier) }}">
-                @csrf
-                @method('DELETE')
-                <button class="text-xs text-red-500 hover:text-red-700"
-                    onclick="return confirm('Supprimer ce cellier ?')">
-                    Supprimer
-                </button>
-            </form>
+                <form method="POST"
+                    action="{{ route('celliers.destroy', $cellier) }}"
+                    class="m-0 p-0 inline-flex">
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit"
+                        onclick="return confirm('Supprimer ce cellier ?')"
+                        class="text-xs leading-none text-red-500 hover:text-red-700">
+                        Supprimer
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -66,20 +73,33 @@
         @forelse($cellier->inventaires as $inventaire)
         <div class="flex flex-col sm:flex-row gap-4 border p-4 rounded bg-white">
 
+            {{-- Image --}}
             <div class="w-full sm:w-[90px] flex justify-center">
                 <img
                     src="{{ $inventaire->bouteille->image ?? asset('images/bouteille-vide.png') }}"
+                    alt="{{ $inventaire->bouteille->nom ?? 'Bouteille' }}"
                     class="h-[130px]">
             </div>
 
+            {{-- Contenu --}}
             <div class="flex-1">
-                <h2 class="font-semibold">
-                    {{ $inventaire->bouteille->nom ?? 'N/A' }}
-                </h2>
+                <div class="flex justify-between items-start gap-3">
+                    <h2 class="font-semibold">
+                        {{ $inventaire->bouteille->nom ?? 'N/A' }}
+                    </h2>
+
+                    @if($inventaire->quantite == 0)
+                    <span class="bg-red-100 text-red-600 text-xs px-2 py-1 rounded-full shrink-0">
+                        Bue
+                    </span>
+                    @endif
+                </div>
 
                 <p class="text-sm text-gray-600">
                     {{ $inventaire->bouteille->pays ?? '' }}
-                    {{ $inventaire->bouteille->format ?? '' }}
+                    @if(!empty($inventaire->bouteille->pays) && !empty($inventaire->bouteille->format)) | @endif
+                    {{ $inventaire->bouteille->format ?? '' }}@if(!empty($inventaire->bouteille->format)) ml @endif
+                    @if((!empty($inventaire->bouteille->pays) || !empty($inventaire->bouteille->format)) && !empty($inventaire->bouteille->type)) | @endif
                     {{ $inventaire->bouteille->type ?? '' }}
                 </p>
 
@@ -90,16 +110,70 @@
                     </span>
                 </p>
 
-                <div class="flex gap-3 mt-3">
+                @if($inventaire->quantite == 0)
+                <p class="text-xs text-red-500 mt-1">
+                    Cette bouteille est conservée dans le cellier, mais elle a été bue.
+                </p>
+                @endif
+
+                {{-- Contrôle quantité + / - --}}
+                <form method="POST"
+                    action="{{ route('inventaires.update', $inventaire) }}"
+                    class="mt-3 flex items-center gap-2">
+                    @csrf
+                    @method('PUT')
+
+                    <button type="button"
+                        onclick="updateQty(this, -1)"
+                        class="px-3 py-1 border rounded">
+                        −
+                    </button>
+
+                    <input type="hidden"
+                        name="quantite"
+                        value="{{ $inventaire->quantite }}"
+                        class="qty-input">
+
+                    <span class="w-6 text-center font-semibold qty-display">
+                        {{ $inventaire->quantite }}
+                    </span>
+
+                    <button type="button"
+                        onclick="updateQty(this, 1)"
+                        class="px-3 py-1 border rounded">
+                        +
+                    </button>
+
+                    <button type="submit"
+                        class="ml-2 px-3 py-1 bg-[#A83248] text-white text-sm rounded">
+                        OK
+                    </button>
+                </form>
+
+                <p class="text-xs text-gray-500 mt-1">
+                    Mets 0 si la bouteille a été bue.
+                </p>
+
+                {{-- Actions bouteille --}}
+                <div class="flex gap-3 mt-3 items-center">
+                    @if($inventaire->bouteille)
                     <a href="{{ route('bouteilles.show', $inventaire->bouteille->id) }}"
                         class="px-3 py-1 bg-[#A83248] text-white text-sm rounded">
                         Détail
                     </a>
+                    @endif
 
-                    <form method="POST" action="{{ route('inventaires.destroy', $inventaire) }}">
+                    <form method="POST"
+                        action="{{ route('inventaires.destroy', $inventaire) }}"
+                        class="inline-flex">
                         @csrf
                         @method('DELETE')
-                        <button class="text-xs text-red-500">Supprimer</button>
+
+                        <button type="submit"
+                            onclick="return confirm('Supprimer cette bouteille ?')"
+                            class="text-xs text-red-500">
+                            Supprimer
+                        </button>
                     </form>
                 </div>
             </div>
@@ -111,7 +185,7 @@
 
 </section>
 
-{{-- DATA --}}
+{{-- Données pour JS --}}
 <div id="bottleModalData"
     data-fallback-image="{{ asset('images/bouteille-vide.png') }}"
     data-csrf-token="{{ csrf_token() }}"
@@ -123,16 +197,15 @@
 
 {{-- Modal centrée --}}
 <div id="modal" class="fixed inset-0 hidden z-50 flex items-center justify-center px-4">
-
     <div class="bg-white w-full max-w-lg rounded-lg shadow-lg flex flex-col max-h-[90vh]">
 
-        {{-- Header --}}
+        {{-- Header modal --}}
         <div class="p-4 border-b flex justify-between items-center">
             <h2 class="font-semibold text-lg">Ajouter une bouteille</h2>
             <button id="closeModal" class="text-xl">✕</button>
         </div>
 
-        {{-- Search --}}
+        {{-- Recherche --}}
         <div class="p-4 border-b">
             <input id="search"
                 type="text"
@@ -140,15 +213,20 @@
                 class="w-full border p-2 rounded">
         </div>
 
-        {{-- Results --}}
+        {{-- Résultats --}}
         <div id="results" class="p-4 overflow-y-auto flex-1 space-y-4">
-            <p class="text-center text-gray-500">Tape au moins 2 caractères pour rechercher</p>
+            <p class="text-center text-gray-500">
+                Tape au moins 2 caractères pour rechercher
+            </p>
         </div>
-
     </div>
 </div>
 
 <script>
+    /**
+     * Initialise la modale de recherche de bouteilles
+     * ainsi que les interactions utilisateur.
+     */
     document.addEventListener('DOMContentLoaded', () => {
 
         const modal = document.getElementById('modal');
@@ -159,38 +237,53 @@
         const results = document.getElementById('results');
 
         const data = document.getElementById('bottleModalData');
-
         const fallbackImage = data.dataset.fallbackImage;
         const csrf = data.dataset.csrfToken;
         const storeUrl = data.dataset.storeUrl;
 
         let timer;
 
+        /**
+         * Ouvre la modale.
+         */
         openBtn.onclick = () => {
             overlay.classList.remove('hidden');
             modal.classList.remove('hidden');
             search.focus();
         };
 
-        closeBtn.onclick = close;
-        overlay.onclick = close;
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') close();
-        });
-
+        /**
+         * Ferme la modale.
+         */
         function close() {
             overlay.classList.add('hidden');
             modal.classList.add('hidden');
         }
 
+        closeBtn.onclick = close;
+        overlay.onclick = close;
+
+        /**
+         * Ferme la modale avec la touche Échap.
+         */
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') close();
+        });
+
+        /**
+         * Lance la recherche avec debounce.
+         */
         search.addEventListener('input', () => {
             clearTimeout(timer);
             timer = setTimeout(() => fetchResults(search.value), 300);
         });
 
+        /**
+         * Recherche des bouteilles via AJAX.
+         *
+         * @param {string} q
+         */
         async function fetchResults(q) {
-
             if (q.length < 2) {
                 results.innerHTML = '<p class="text-center text-gray-500">Minimum 2 caractères</p>';
                 return;
@@ -214,8 +307,12 @@
             }
         }
 
+        /**
+         * Affiche les résultats de recherche dans la modale.
+         *
+         * @param {Array} list
+         */
         function render(list) {
-
             if (!list.length) {
                 results.innerHTML = '<p class="text-center text-gray-500">Aucun résultat</p>';
                 return;
@@ -224,16 +321,19 @@
             results.innerHTML = '';
 
             list.forEach(b => {
-
                 const div = document.createElement('div');
                 div.className = 'flex gap-3 border p-3 rounded';
 
                 div.innerHTML = `
-                <img src="${b.image || fallbackImage}" class="h-[100px]">
+                <img src="${b.image || fallbackImage}" alt="${b.nom}" class="h-[100px]">
 
                 <div class="flex-1">
                     <p class="font-semibold">${b.nom}</p>
-                    <p class="text-sm text-gray-600">${b.pays || ''} ${b.format ? '| ' + b.format + ' ml' : ''} ${b.type ? '| ' + b.type : ''}</p>
+                    <p class="text-sm text-gray-600">
+                        ${b.pays || ''}
+                        ${b.format ? '| ' + b.format + ' ml' : ''}
+                        ${b.type ? '| ' + b.type : ''}
+                    </p>
 
                     <form method="POST" action="${storeUrl}" class="mt-2 flex gap-2">
                         <input type="hidden" name="_token" value="${csrf}">
@@ -250,6 +350,27 @@
             });
         }
     });
+
+    /**
+     * Met à jour la quantité via les boutons + et -.
+     *
+     * @param {HTMLElement} btn
+     * @param {number} delta
+     */
+    function updateQty(btn, delta) {
+        const form = btn.closest('form');
+        const input = form.querySelector('.qty-input');
+        const display = form.querySelector('.qty-display');
+
+        let value = parseInt(input.value, 10);
+        value += delta;
+
+        if (value < 0) value = 0;
+        if (value > 999) value = 999;
+
+        input.value = value;
+        display.textContent = value;
+    }
 </script>
 
 @endsection
