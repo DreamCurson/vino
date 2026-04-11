@@ -17,7 +17,12 @@ document.addEventListener("DOMContentLoaded", function () {
         // Mettre à jour l'URL du navigateur pour refléter le nouveau terme de recherche sans recharger la page
         window.history.pushState({}, "", url);
 
-        // Soumettre automatiquement le formulaire pour appliquer la recherche
-        searchForm.submit();
+        // Annuler le précédent timeout s'il y en a un en cours
+        clearTimeout(timeout);
+
+        // Attendre 3 secondes avant de soumettre le formulaire
+        timeout = setTimeout(function () {
+            searchForm.submit();
+        }, 3000);
     });
 });
