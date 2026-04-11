@@ -63,21 +63,37 @@ document.addEventListener("DOMContentLoaded", () => {
     cellierSelect.addEventListener("change", () => {
         form.action = `/celliers/${cellierSelect.value}/inventaires`;
     });
+
+    /**
+     * Gestion quantité + / -
+     */
+    function updateModalQty(delta) {
+        const input = document.getElementById("modalQuantite");
+        const display = document.getElementById("modalQuantiteDisplay");
+
+        let value = parseInt(input.value, 10) || 1;
+        value += delta;
+
+        if (value < 1) value = 1;
+        if (value > 999) value = 999;
+
+        input.value = value;
+        display.textContent = value;
+    }
+
+    // Attach event listeners for quantity change buttons
+    const minusBtn = document.querySelector(
+        "#addToCellierModal button[aria-label='Diminuer la quantité']",
+    );
+    const plusBtn = document.querySelector(
+        "#addToCellierModal button[aria-label='Augmenter la quantité']",
+    );
+
+    if (minusBtn) {
+        minusBtn.addEventListener("click", () => updateModalQty(-1));
+    }
+
+    if (plusBtn) {
+        plusBtn.addEventListener("click", () => updateModalQty(1));
+    }
 });
-
-/**
- * Gestion quantité + / -
- */
-function updateModalQty(delta) {
-    const input = document.getElementById("modalQuantite");
-    const display = document.getElementById("modalQuantiteDisplay");
-
-    let value = parseInt(input.value, 10) || 1;
-    value += delta;
-
-    if (value < 1) value = 1;
-    if (value > 999) value = 999;
-
-    input.value = value;
-    display.textContent = value;
-}
