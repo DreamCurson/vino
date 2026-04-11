@@ -66,36 +66,36 @@
         </div>
 
         {{-- Actions --}}
-        <div class="mt-3 flex flex-wrap gap-y-2">
-            {{-- Bouton principal --}}
+        <div class="mt-3 flex items-center gap-3">
+            <!-- Voir -->
             <a href="{{ route('celliers.show', $cellier) }}"
-                class="px-4 py-2 bg-[#A83248] text-white rounded text-sm">
-                Voir le cellier
+                class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-100 transition"
+                title="Voir">
+                <img src="{{ asset('images/icons/oeil.svg') }}" alt="icon noir d'un oeil" class="w-6 h-6">
             </a>
 
-            {{-- Actions secondaires alignées --}}
-            <div class="w-full flex items-center gap-4">
-                <a href="{{ route('celliers.edit', $cellier) }}"
-                    class="text-xs leading-none text-gray-500 hover:text-gray-700">
-                    Modifier
-                </a>
+            <!-- Modifier -->
+            <a href="{{ route('celliers.edit', $cellier) }}"
+                class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-100 transition"
+                title="Modifier">
+                <img src="{{ asset('images/icons/crayon.svg') }}" alt="icon noir d'un crayon" class="w-6 h-6">
+            </a>
 
-                <form method="POST"
-                    action="{{ route('celliers.destroy', $cellier) }}"
-                    class="m-0 p-0 inline-flex">
-                    @csrf
-                    @method('DELETE')
+            <!-- Supprimer -->
+            <form method="POST" action="{{ route('celliers.destroy', $cellier) }}">
+                @csrf
+                @method('DELETE')
 
-                    <button
-                        type="submit"
-                        onclick="return confirm('Voulez-vous vraiment supprimer ce cellier ? Cette action est irréversible.')"
-                        class="text-xs leading-none text-red-500 hover:text-red-700">
-                        Supprimer
-                    </button>
-                </form>
-            </div>
+                <button type="submit"
+                    onclick="return confirm('Supprimer ce cellier ?')"
+                    class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-red-50 transition"
+                    title="Supprimer">
+                    <img src="{{ asset('images/icons/poubelle.svg') }}" alt="icon noir d'une poubelle" class="w-6 h-6">
+                </button>
+            </form>
         </div>
     </div>
+</div>
 </div>
 @endforeach
 @endif
