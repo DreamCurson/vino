@@ -82,51 +82,51 @@ class ImporterSaq extends Command
         $this->info("=== Passe de tri : {$triLabel} ===");
         $page = 1;
 
-      while (true) {
-        $this->info("Import de la page {$page}...");
+        while (true) {
+          $this->info("Import de la page {$page}...");
 
-        $response = $this->envoyerRequeteSaq($page, $pageSize, $tri);
+          $response = $this->envoyerRequeteSaq($page, $pageSize, $tri);
 
-        if ($response->failed()) {
-          $this->error("Erreur API SAQ à la page {$page}.");
-          $this->line($response->body());
+          if ($response->failed()) {
+            $this->error("Erreur API SAQ à la page {$page}.");
+            $this->line($response->body());
 
-          return self::FAILURE;
-        }
-
-        $data = $response->json();
-        $items = $data['data']['productSearch']['items'] ?? [];
-
-        /**
-         * Arrêt normal si aucune donnée n'est retournée.
-         */
-        if (empty($items)) {
-          $this->info("Aucun item retourné à la page {$page}. Fin de la passe.");
-          break;
-        }
-
-        foreach ($items as $item) {
-          if ($this->traiterItem($item)) {
-            $totalImporte++;
-          } else {
-            $totalIgnores++;
+            return self::FAILURE;
           }
+
+          $data = $response->json();
+          $items = $data['data']['productSearch']['items'] ?? [];
+
+          /**
+           * Arrêt normal si aucune donnée n'est retournée.
+           */
+          if (empty($items)) {
+            $this->info("Aucun item retourné à la page {$page}. Fin de la passe.");
+            break;
+          }
+
+          foreach ($items as $item) {
+            if ($this->traiterItem($item)) {
+              $totalImporte++;
+            } else {
+              $totalIgnores++;
+            }
+          }
+
+          $this->info("Page {$page} terminée. Importés : {$totalImporte} | Ignorés : {$totalIgnores}");
+
+          $page++;
+
+          /**
+           * Arrêt de sécurité pour éviter une boucle infinie.
+           */
+          if ($page > self::LIMITE_PAGES_SECURITE) {
+            $this->warn('Arrêt de sécurité atteint : limite maximale de pages dépassée.');
+            break;
+          }
+
+          sleep(1);
         }
-
-        $this->info("Page {$page} terminée. Importés : {$totalImporte} | Ignorés : {$totalIgnores}");
-
-        $page++;
-
-        /**
-         * Arrêt de sécurité pour éviter une boucle infinie.
-         */
-        if ($page > self::LIMITE_PAGES_SECURITE) {
-          $this->warn('Arrêt de sécurité atteint : limite maximale de pages dépassée.');
-          break;
-        }
-
-        sleep(1);
-      }
       }
 
       $this->info('Import terminé avec succès.');
@@ -349,9 +349,7 @@ class ImporterSaq extends Command
   {
     $type = mb_strtolower(trim($type));
 
-    return str_contains($type, 'vin')
-      || str_contains($type, 'porto')
-      || str_contains($type, 'champagne');
+    return str_contains($type, 'vin');
   }
 
   /**

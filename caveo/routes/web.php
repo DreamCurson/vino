@@ -21,7 +21,6 @@ use Illuminate\Support\Facades\Route;
 | - d'afficher les pages publiques ;
 | - de gérer les pages accessibles aux utilisateurs connectés ;
 | - de lancer la mise à jour de l'inventaire SAQ ;
-| - d'effectuer une recherche AJAX de bouteilles pour l'ajout au cellier ;
 | - de tester manuellement la connexion à l'API SAQ via une route temporaire.
 |
 */
@@ -70,15 +69,6 @@ Route::middleware('auth')->group(function () {
    * - celliers.destroy
    */
   Route::resource('celliers', CellierController::class);
-
-  /**
-   * Recherche AJAX de bouteilles pour la modale d'ajout au cellier.
-   *
-   * Cette route retourne une liste JSON limitée de bouteilles
-   * correspondant au texte recherché.
-   */
-  Route::get('/celliers/recherche/bouteilles', [CellierController::class, 'rechercherBouteilles'])
-    ->name('celliers.bouteilles.recherche');
 
   /**
    * Ajoute une bouteille dans un cellier.
