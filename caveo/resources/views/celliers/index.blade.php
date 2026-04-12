@@ -66,29 +66,34 @@
         </div>
 
         {{-- Actions --}}
-        <div class="mt-4 flex items-center gap-2 w-full">
+        <div class="mt-3 flex items-center gap-3">
+            <!-- Voir -->
             <a href="{{ route('celliers.show', $cellier) }}"
-                class="flex-1 text-center bg-[#A83248] text-white py-2 rounded text-sm font-medium">
-                Voir
+                class="h-10 px-2 py-1 flex items-center border border-gray-300 text-gray-600 rounded hover:bg-gray-100">
+                <p>Voir le cellier</p>
             </a>
 
-            <a href="{{ route('celliers.edit', $cellier) }}"
-                class="flex-1 text-center border border-gray-300 text-gray-700 py-2 rounded text-sm font-medium hover:bg-gray-50 transition">
-                Modifier
-            </a>
+            <div class="flex justify-end gap-3 ">
+                <!-- Modifier -->
+                <a href="{{ route('celliers.edit', $cellier) }}"
+                    class="w-10 h-10 px-2 py-1 flex items-center border border-gray-300 text-gray-600 rounded hover:bg-gray-100"
+                    title="Modifier le cellier">
+                    <img src="{{ asset('images/icons/crayon.svg') }}" alt="icon noir d'un crayon" class="w-6 h-6">
+                </a>
 
-            <form method="POST"
-                action="{{ route('celliers.destroy', $cellier) }}"
-                class="flex-1">
-                @csrf
-                @method('DELETE')
+                <!-- Supprimer -->
+                <form method="POST" action="{{ route('celliers.destroy', $cellier) }}">
+                    @csrf
+                    @method('DELETE')
 
-                <button type="submit"
-                    onclick="return confirm('Supprimer ce cellier ?')"
-                    class="w-full text-center border border-red-300 text-red-600 py-2 rounded text-sm font-medium hover:bg-red-50 transition">
-                    Supprimer
-                </button>
-            </form>
+                    <button type="submit"
+                        onclick="return confirm('Supprimer ce cellier ?')"
+                        class="w-10 h-10 px-2 py-1 flex items-center border border-gray-300 text-gray-600 rounded hover:bg-gray-100"
+                        title="Supprimer le cellier">
+                        <img src="{{ asset('images/icons/poubelle.svg') }}" alt="icon noir d'une poubelle" class="w-6 h-6">
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
