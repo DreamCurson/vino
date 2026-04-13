@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bouteille;
 use App\Models\Cellier;
+use App\Models\ListeAchat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -111,13 +112,25 @@ class CatalogueController extends Controller
                 ->get();
         }
 
+        /**
+         * Liste d'achat de l'utilisateur connecté.
+         */
+        $listes = collect();
+
+        if (Auth::check()) {
+            $listes = ListeAchat::where('id_utilisateur', Auth::id())
+                ->orderBy('nom')
+                ->get();
+        }
+
         return view('catalogue.index', compact(
             'bouteilles',
             'types',
             'pays',
             'formats',
             'millesimes',
-            'celliers'
+            'celliers',
+            'listes',
         ));
     }
 }
