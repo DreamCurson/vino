@@ -199,6 +199,20 @@
                 Créer un cellier
             </a>
             @endif
+
+            @if($listes->isNotEmpty())
+            <a href="#"
+                class="ml-auto px-2 py-2 border border-gray-300 rounded hover:bg-gray-100 flex items-center gap-2 w-max"
+                title="Ajouter à la liste d'achat">
+                <img src="{{ asset('images/icons/liste.svg') }}" alt="Ajouter à la liste d'achat" class="w-6 h-6">
+            </a>
+            @else
+            <a href="{{ route('achat.create') }}"
+                class="ml-auto px-2 py-2 border border-gray-300 rounded hover:bg-gray-100 flex items-center gap-2 w-max"
+                title="Ajouter à la liste d'achat">
+                <img src="{{ asset('images/icons/liste.svg') }}" alt="Créer une liste d'achat" class="w-6 h-6">
+            </a>
+            @endif
         </div>
     </div>
 </div>
