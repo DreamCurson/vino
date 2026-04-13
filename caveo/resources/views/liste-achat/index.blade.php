@@ -36,56 +36,75 @@
 </div>
 @else
 @foreach($listes as $liste)
-<div class="flex gap-6 m-4 mb-6 font-roboto border p-4 rounded bg-white">
-    {{-- Contenu --}}
-    <div class="flex flex-col justify-between flex-1 min-w-0">
+
+<div class="m-4 border rounded bg-white">
+
+    <!-- HEADER CLIQUABLE  -->
+    <button type="button"
+        class="w-full text-left p-4 flex justify-between items-center hover:bg-gray-50 toggle-liste"
+        data-target="liste-{{ $liste->id }}">
+
         <div>
-            <h2 class="font-semibold text-lg break-words">
+            <h2 class="font-semibold text-lg">
                 {{ $liste->nom }}
             </h2>
 
             @if(!empty($liste->description))
-            <p class="mt-2 font-medium mb-3 text-sm text-gray-700">
-                {{ $liste->description }}
-            </p>
+                <p class="text-sm text-gray-600">
+                    {{ $liste->description }}
+                </p>
             @endif
         </div>
 
-        {{-- Actions --}}
-        <div class="mt-3 flex items-center justify-between gap-3">
-            <!-- Voir -->
-            <a href="#"
-                class="px-2 py-2 border border-gray-300 rounded hover:bg-gray-100 flex items-center gap-2 text-gray-600 w-max"
-                title="Voir le cellier">
-                <span class="text-sm">Voir le contenu de la liste d'achat</span>
-            </a>
+        <span class="text-xl transition">⌄</span>
+    </button>
 
-            <div class="flex items-center gap-3">
-                <!-- Modifier -->
-                <a href="{{ route('achat.edit', $liste) }}"
-                    class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100"
-                    title="Modifier la liste d'achat"
-                    aria-label="Modifier la liste d'achat">
-                    <img src="{{ asset('images/icons/crayon.svg') }}" alt="" aria-hidden="true" class="w-6 h-6">
-                </a>
+    <!-- CONTENU DROPDOWN  -->
+    <div id="liste-{{ $liste->id }}" class="hidden border-t p-4">
 
-                <!-- Supprimer -->
-                <form method="POST" action="{{ route('achat.destroy', $liste) }}" class="inline-flex">
-                    @csrf
-                    @method('DELETE')
+        @if($liste->bouteilles->isEmpty())
+            <p class="text-sm text-gray-500">
+                Aucune bouteille dans cette liste
+            </p>
+        @else
+            <div class="space-y-2">
+                @foreach($liste->bouteilles as $bouteille)
+                    <div class="flex justify-between border rounded p-2">
+                        <span>{{ $bouteille->nom }}</span>
 
-                    <button type="submit"
-                        onclick="return confirm('Supprimer cette liste d\'achat ?')"
-                        class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100"
-                        title="Supprimer la liste d'achat"
-                        aria-label="Supprimer la liste d'achat">
-                        <img src="{{ asset('images/icons/poubelle.svg') }}" alt="" aria-hidden="true" class="w-6 h-6">
-                    </button>
-                </form>
+                        <span class="text-sm text-gray-600">
+                            x{{ $bouteille->pivot->quantite }}
+                        </span>
+                    </div>
+                @endforeach
             </div>
-        </div>
+        @endif
+
     </div>
+
+    <!-- ACTIONS -->
+    <div class="p-4 flex justify-end gap-3 border-t">
+
+        <a href="{{ route('achat.edit', $liste) }}"
+            class="w-10 h-10 flex items-center justify-center border rounded hover:bg-gray-100">
+            <img src="{{ asset('images/icons/crayon.svg') }}" class="w-6 h-6">
+        </a>
+
+        <form method="POST" action="{{ route('achat.destroy', $liste) }}">
+            @csrf
+            @method('DELETE')
+
+            <button type="submit"
+                onclick="return confirm('Supprimer cette liste ?')"
+                class="w-10 h-10 flex items-center justify-center border rounded hover:bg-gray-100">
+                <img src="{{ asset('images/icons/poubelle.svg') }}" class="w-6 h-6">
+            </button>
+        </form>
+
+    </div>
+
 </div>
+
 @endforeach
 @endif
 
