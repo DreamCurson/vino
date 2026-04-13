@@ -108,9 +108,14 @@ Route::middleware('auth')->group(function () {
    *  Retourne la page de la liste d'achat
    */   
   Route::get('/achat', [ListeAchatController::class, 'index'])->name('achat.index');
+
   Route::get('/achat/creation', [ListeAchatController::class, 'create'])->name('achat.create');
   Route::post('/achat/creation', [ListeAchatController::class, 'store'])->name('achat.store');
 
+  Route::get('/achat/{liste}', [ListeAchatController::class, 'edit'])->name('achat.edit');
+
+  Route::delete('/achat/{liste}', [ListeAchatController::class, 'destroy'])->name('achat.destroy'); 
+  
 
 });
 
