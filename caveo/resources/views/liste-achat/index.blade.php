@@ -64,21 +64,21 @@
                 <!-- Modifier -->
                 <a href="#"
                     class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100"
-                    title="Modifier la liste d\'achat"
-                    aria-label="Modifier la liste d\'achat">
+                    title="Modifier la liste d'achat"
+                    aria-label="Modifier la liste d'achat">
                     <img src="{{ asset('images/icons/crayon.svg') }}" alt="" aria-hidden="true" class="w-6 h-6">
                 </a>
 
                 <!-- Supprimer -->
-                <form method="POST" action="#" class="inline-flex">
+                <form method="POST" action="{{ route('achat.destroy', $liste->id) }}" class="inline-flex">
                     @csrf
                     @method('DELETE')
 
                     <button type="submit"
-                        onclick="return confirm('Supprimer ce cellier ?')"
+                        onclick="return confirm('Supprimer cette liste d\'achat ?')"
                         class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100"
-                        title="Supprimer le cellier"
-                        aria-label="Supprimer le cellier">
+                        title="Supprimer la liste d'achat"
+                        aria-label="Supprimer la liste d'achat">
                         <img src="{{ asset('images/icons/poubelle.svg') }}" alt="" aria-hidden="true" class="w-6 h-6">
                     </button>
                 </form>
