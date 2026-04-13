@@ -349,43 +349,82 @@
 </div>
 @endif
 
-<div id="addToListeModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-6 rounded w-[400px]">
+<div id="addToListeModal" class="fixed inset-0 hidden z-50">
+    <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+    <div class="relative flex items-center justify-center min-h-screen px-4">
 
-        <h2 class="text-lg font-semibold mb-4">Ajouter à une liste d'achat</h2>
+        <div class="bg-white w-full max-w-md rounded-lg shadow-lg p-5">
 
-        <form method="POST" id="addToListeForm">
-            @csrf
+            <h2 class="text-lg font-semibold mb-4 text-center">
+                Ajouter à une liste d'achat
+            </h2>
 
-            <input type="hidden" name="id_bouteille" id="modal_bouteille_id">
+            <form method="POST" id="addToListeForm">
+                @csrf
 
-            <!-- Liste -->
-            <label class="block mb-2">Liste d'achat</label>
-            <select name="liste_id" id="modal_liste_id" class="w-full border rounded p-2 mb-4">
-                @foreach($listes as $liste)
-                    <option value="{{ $liste->id }}">{{ $liste->nom }}</option>
-                @endforeach
-            </select>
+                <input type="hidden" name="id_bouteille" id="modal_bouteille_id">
 
-            <!-- Quantité -->
-            <label class="block mb-2">Quantité</label>
-            <input type="number" name="quantite" value="1" min="1"
-                class="w-full border rounded p-2 mb-4">
+                <!-- Liste -->
+                <div class="mb-4">
+                    <label class="block mb-1 text-sm font-medium">
+                        Choisir une liste
+                    </label>
 
-            <!-- Actions -->
-            <div class="flex justify-end gap-2">
-                <button type="button" id="closeModal"
-                    class="px-4 py-2 bg-gray-200 rounded">
-                    Annuler
-                </button>
+                    <select name="liste_id"
+                        id="modal_liste_id"
+                        class="w-full border rounded px-3 py-2">
 
-                <button type="submit"
-                    class="px-4 py-2 bg-blue-600 text-white rounded">
-                    Ajouter
-                </button>
-            </div>
+                        @foreach($listes as $liste)
+                            <option value="{{ $liste->id }}">
+                                {{ $liste->nom }}
+                            </option>
+                        @endforeach
 
-        </form>
+                    </select>
+                </div>
+
+                <!-- Quantité -->
+                <div class="mb-5">
+                    <label class="block mb-2 text-sm font-medium">
+                        Quantité
+                    </label>
+
+                    <div class="flex items-center justify-between w-full">
+
+                        <button type="button" id="minusQuantite"
+                            class="w-1/3 flex justify-center py-5">
+                            <img src="{{ asset('images/icons/cercle-moins.svg') }}" class="w-10 h-10">
+                        </button>
+
+                        <div class="w-1/3 text-center">
+                            <span id="modalQuantiteDisplay" class="text-2xl font-semibold">1</span>
+                        </div>
+
+                        <button type="button" id="plusQuantite"
+                            class="w-1/3 flex justify-center py-5">
+                            <img src="{{ asset('images/icons/cercle-plus.svg') }}" class="w-10 h-10">
+                        </button>
+
+                    </div>
+
+                    <input type="hidden" name="quantite" id="modalQuantite" value="1">
+                </div>
+
+                <!-- Actions -->
+                <div class="flex gap-3">
+                    <button type="submit"
+                        class="w-1/2 bg-[#A83248] text-white py-3 rounded font-medium">
+                        Ajouter
+                    </button>
+
+                    <button type="button"
+                        id="closeModal"
+                        class="w-1/2 border py-3 rounded font-medium">
+                        Annuler
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
