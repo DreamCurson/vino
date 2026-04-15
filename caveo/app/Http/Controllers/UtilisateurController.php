@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Utilisateur;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -25,7 +26,9 @@ class UtilisateurController extends Controller
      */
     public function edit(Utilisateur $utilisateur)
     {
-        //
+        return view('profil.edit', [
+            'user' => Auth::user()
+        ]);
     }
 
     /**
@@ -33,7 +36,21 @@ class UtilisateurController extends Controller
      */
     public function update(Request $request, Utilisateur $utilisateur)
     {
-        //
+        $utilisateur = Auth::user();
+
+        $request->validate([
+            'prenom' => 'required|string|max:255',
+            'nom' => 'required|string|max:255',
+            'email' => 'required|email|unique:utilisateurs,email,' . $utilisateur->id,
+        ]);
+
+        $utilisateur->update([
+            'prenom' => $request->prenom,
+            'nom' => $request->nom,
+            'email' => $request->email,
+        ]);
+
+        return redirect()->route('profil.show')->with('status', 'Informations mises à jour !');
     }
 
     /**
