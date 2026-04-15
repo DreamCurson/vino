@@ -8,6 +8,7 @@
 <script type='module' src="{{ asset('js/recherche.js') }}"></script>
 <script type='module' src="{{ asset('js/renitialiser-bouton.js') }}"></script>
 <script type='module' src="{{ asset('js/modale-liste-achat.js') }}"></script>
+<script type="module" src="{{ asset('js/message-flash-auto.js') }}"></script>
 
 <form method="GET" action="{{ url()->current() }}" id="search-form">
     <div class="m-4">
@@ -151,6 +152,8 @@
     @endif
 </div>
 
+<div id="ajax-flash-container" class="m-4"></div>
+
 @if($bouteilles->isEmpty())
 <div class="mt-[30px] mb-[30px] ml-4 mr-4 p-4 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded text-center">
     Aucune bouteille trouvée
@@ -283,9 +286,9 @@
                         class="w-full border rounded px-3 py-2">
 
                         @foreach($celliers as $cellier)
-                            <option value="{{ $cellier->id }}">
-                                {{ $cellier->nom }}
-                            </option>
+                        <option value="{{ $cellier->id }}">
+                            {{ $cellier->nom }}
+                        </option>
                         @endforeach
 
                     </select>
@@ -300,23 +303,29 @@
                     <div class="flex items-center justify-between w-full">
 
                         <button type="button"
-                            class="w-1/3 flex justify-center py-5">
-                            <img src="{{ asset('images/icons/cercle-moins.svg') }}" class="w-10 h-10">
+                            id="cellierMinusBtn"
+                            class="w-1/3 flex justify-center py-5"
+                            aria-label="Diminuer la quantité">
+                            <img src="{{ asset('images/icons/cercle-moins.svg') }}" class="w-10 h-10" alt="" aria-hidden="true">
                         </button>
 
                         <div class="w-1/3 text-center">
-                            <span id="modalQuantiteDisplay" class="text-2xl font-semibold">1</span>
+                            <span id="cellierQuantiteDisplay" class="text-2xl font-semibold">1</span>
                         </div>
 
                         <button type="button"
-                            class="w-1/3 flex justify-center py-5">
-                            <img src="{{ asset('images/icons/cercle-plus.svg') }}" class="w-10 h-10">
+                            id="cellierPlusBtn"
+                            class="w-1/3 flex justify-center py-5"
+                            aria-label="Augmenter la quantité">
+                            <img src="{{ asset('images/icons/cercle-plus.svg') }}" class="w-10 h-10" alt="" aria-hidden="true">
                         </button>
 
                     </div>
 
-                    <input type="hidden" name="quantite" id="modalQuantite" value="1">
+                    <input type="hidden" name="quantite" id="cellierQuantite" value="1">
                 </div>
+
+                <input type="hidden" name="quantite" id="modalQuantite" value="1">
 
                 {{-- Actions --}}
                 <div class="flex gap-3">
@@ -364,9 +373,9 @@
                         class="w-full border rounded px-3 py-2">
 
                         @foreach($listes as $liste)
-                            <option value="{{ $liste->id }}">
-                                {{ $liste->nom }}
-                            </option>
+                        <option value="{{ $liste->id }}">
+                            {{ $liste->nom }}
+                        </option>
                         @endforeach
 
                     </select>
