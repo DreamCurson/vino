@@ -41,6 +41,23 @@ Route::middleware('auth')->group(function () {
   })->name('accueil');
 
   /**
+   * Routes pour l'inscription.
+   */
+  Route::get('/inscription', function () {
+    return view('auth.inscription');
+  })->name('inscription.form');
+
+  Route::post('/inscription', [RegisterController::class, 'store'])
+    ->name('inscription.submit');
+
+  /**
+   * Routes pour la connexion et la déconnexion.
+   */
+  Route::get('/', [AuthController::class, 'create'])->name('connexion');
+  Route::post('/', [AuthController::class, 'store'])->name('auth.store');
+  Route::get('/deconnexion', [AuthController::class, 'destroy'])->name('deconnexion');
+
+  /**
    * Route vers le catalogue des bouteilles.
    */
   Route::get('/catalogue', [CatalogueController::class, 'index'])
@@ -94,7 +111,7 @@ Route::middleware('auth')->group(function () {
    * Supprime une ligne d'inventaire.
    */
   Route::delete('/inventaires/{inventaire}', [InventaireController::class, 'destroy'])
-    ->name('inventaires.destroy'); 
+    ->name('inventaires.destroy');
 
   /**
    * Déclenche la mise à jour de l'inventaire SAQ.
@@ -103,10 +120,9 @@ Route::middleware('auth')->group(function () {
     ->name('admin.saq.update');
 
 
-
   /**
    *  Retourne la page de la liste d'achat
-   */   
+   */
   Route::get('/achat', [ListeAchatController::class, 'index'])->name('achat.index');
 
   Route::get('/achat/creation', [ListeAchatController::class, 'create'])->name('achat.create');
@@ -115,11 +131,10 @@ Route::middleware('auth')->group(function () {
   Route::get('/achat/{liste}', [ListeAchatController::class, 'edit'])->name('achat.edit');
   Route::put('/achat/{liste}', [ListeAchatController::class, 'update'])->name('achat.update');
 
-  Route::delete('/achat/{liste}', [ListeAchatController::class, 'destroy'])->name('achat.destroy'); 
-  
+  Route::delete('/achat/{liste}', [ListeAchatController::class, 'destroy'])->name('achat.destroy');
+
   Route::post('/achat/{liste}/bouteilles', [ListeAchatController::class, 'addBouteille'])->name('achat.bouteilles.add');
   Route::delete('/achat/{liste}/bouteilles/{bouteille}', [ListeAchatController::class, 'removeBouteille'])->name('achat.bouteilles.destroy');
-
 });
 
 /**
@@ -145,23 +160,6 @@ function trouverAttribut(array $attributes, string $nomRecherche): ?string
 
   return null;
 }
-
-/**
- * Routes pour l'inscription.
- */
-Route::get('/inscription', function () {
-  return view('auth.inscription');
-})->name('inscription.form');
-
-Route::post('/inscription', [RegisterController::class, 'store'])
-  ->name('inscription.submit');
-
-/**
- * Routes pour la connexion.
- */
-Route::get('/', [AuthController::class, 'create'])->name('connexion');
-Route::post('/', [AuthController::class, 'store'])->name('auth.store');
-Route::get('/deconnexion', [AuthController::class, 'destroy'])->name('deconnexion');
 
 /**
  * Route de test temporaire pour valider la connexion à l'API SAQ

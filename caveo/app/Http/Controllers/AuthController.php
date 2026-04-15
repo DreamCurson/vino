@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Bouteille;
 use App\Models\Utilisateur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -54,17 +53,7 @@ class AuthController extends Controller
 
         Auth::login($utilisateur);
 
-        $bouteille = Bouteille::first();
-
-        if (!$bouteille) {
-            return redirect()
-                ->route('catalogue.index')
-                ->withSuccess('Connexion réussie!');
-        }
-
-        return redirect()
-            ->route('bouteilles.show', $bouteille->id)
-            ->withSuccess('Connexion réussie!');
+        return redirect()->route('celliers.index')->withSuccess('Connexion réussie!');
     }
 
     /**
