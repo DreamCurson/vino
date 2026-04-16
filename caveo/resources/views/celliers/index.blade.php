@@ -4,6 +4,8 @@
 
 @section('content')
 <script type="module" src="{{ asset('js/message-flash-auto.js') }}"></script>
+<script type="module" src="{{ asset('js/confirmation-suppression.js') }}"></script>
+
 <div class="m-4 flex items-start justify-between gap-4">
     <div>
         <h1 class="text-3xl text-[#7A1E2E]" style="font-family: 'Crimson Text', serif;">
@@ -31,7 +33,7 @@
 @else
 @foreach($celliers as $cellier)
 <div class="flex gap-6 m-4 mb-6 font-roboto border p-4 rounded bg-white">
-    {{-- Image cellier --}}
+
     <div class="w-[90px] flex justify-center items-center shrink-0">
         <img
             src="{{ asset('images/bouteille-vide.png') }}"
@@ -41,9 +43,7 @@
 
     <div class="flex flex-col justify-between flex-1 min-w-0">
         <div>
-            <h2 class="font-semibold text-lg break-words">
-                {{ $cellier->nom }}
-            </h2>
+            <h2 class="font-semibold text-lg break-words"></h2>
 
             <div class="flex items-center text-sm text-gray-600 space-x-2 flex-wrap">
                 @if(!empty($cellier->emplacement))
@@ -84,8 +84,7 @@
                     @method('DELETE')
 
                     <button type="submit"
-                        onclick="return confirm('Supprimer ce cellier ?')"
-                        class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100"
+                        class="bouton-supprimer w-10 h-10 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100"
                         title="Supprimer le cellier"
                         aria-label="Supprimer le cellier">
                         <img src="{{ asset('images/icons/poubelle.svg') }}" alt="" aria-hidden="true" class="w-6 h-6">
