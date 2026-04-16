@@ -134,4 +134,7 @@ Route::middleware('auth')->group(function () {
 
   Route::delete('/achat/{liste}/bouteilles/{bouteille}', [ListeAchatController::class, 'removeBouteille'])
     ->name('achat.bouteilles.destroy');
+
+  Route::patch('/achat/{liste}/bouteilles/{bouteille}/quantite', [ListeAchatController::class, 'updateQuantite'])
+    ->name('achat.bouteilles.updateQuantite');
 });
