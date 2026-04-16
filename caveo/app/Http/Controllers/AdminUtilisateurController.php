@@ -103,16 +103,7 @@ class AdminUtilisateurController extends Controller
          * La validation est gérée automatiquement par UpdateUtilisateurRequest.
          * Récupération des données validées.
          */
-        $validated = $request->validated();
-
-        
-        if (isset($validated['courriel'])) {
-            $validated['email'] = $validated['courriel'];
-            unset($validated['courriel']);
-        }
-
-        
-        $utilisateur->update($validated);
+        $utilisateur->update($request->validated());
 
         return redirect()
             ->route('admin.utilisateurs.index')

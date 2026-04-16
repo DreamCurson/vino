@@ -8,10 +8,12 @@ class UpdateUtilisateurRequest extends FormRequest
 {
     /**
      * Détermine si l'utilisateur est autorisé à effectuer cette requête.
+     *
+     * Seuls les administrateurs peuvent modifier un utilisateur.
      */
     public function authorize(): bool
     {
-        return true;
+        return optional($this->user()?->role)->nom === 'admin';
     }
 
     /**
@@ -26,7 +28,7 @@ class UpdateUtilisateurRequest extends FormRequest
         return [
             'prenom' => 'required|string|max:35',
             'nom' => 'required|string|max:35',
-            'courriel' => 'required|email|max:255|unique:utilisateurs,email,' . $utilisateur->id,
+            'email' => 'required|email|max:255|unique:utilisateurs,email,' . $utilisateur->id,
             'id_role' => 'required|exists:roles,id',
         ];
     }
@@ -47,10 +49,10 @@ class UpdateUtilisateurRequest extends FormRequest
             'nom.string' => 'Le nom doit être une chaîne de caractères.',
             'nom.max' => 'Le nom ne peut pas dépasser :max caractères.',
 
-            'courriel.required' => 'L\'adresse courriel est obligatoire.',
-            'courriel.email' => 'L\'adresse courriel doit être valide.',
-            'courriel.max' => 'L\'adresse courriel ne peut pas dépasser :max caractères.',
-            'courriel.unique' => 'Cette adresse courriel est déjà utilisée.',
+            'email.required' => 'L\'adresse courriel est obligatoire.',
+            'email.email' => 'L\'adresse courriel doit être valide.',
+            'email.max' => 'L\'adresse courriel ne peut pas dépasser :max caractères.',
+            'email.unique' => 'Cette adresse courriel est déjà utilisée.',
 
             'id_role.required' => 'Le rôle est obligatoire.',
             'id_role.exists' => 'Le rôle sélectionné n\'existe pas.',
@@ -67,7 +69,7 @@ class UpdateUtilisateurRequest extends FormRequest
         return [
             'prenom' => 'prénom',
             'nom' => 'nom',
-            'courriel' => 'adresse courriel',
+            'email' => 'adresse courriel',
             'id_role' => 'rôle',
         ];
     }

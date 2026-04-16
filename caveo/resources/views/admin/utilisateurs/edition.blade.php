@@ -73,19 +73,19 @@
 
             <!-- Courriel -->
             <div>
-                <label for="courriel" class="block mb-2 font-semibold text-[#1A1A1A]">
+                <label for="email" class="block mb-2 font-semibold text-[#1A1A1A]">
                     Adresse courriel
                 </label>
                 <input
                     type="email"
-                    id="courriel"
-                    name="courriel"
-                    value="{{ old('courriel', $utilisateur->email) }}"
+                    id="email"
+                    name="email"
+                    value="{{ old('email', $utilisateur->email) }}"
                     maxlength="255"
                     required
                     placeholder="exemple@courriel.com"
-                    class="w-full border rounded px-3 py-3 @error('courriel') border-red-500 @enderror">
-                @error('courriel')
+                    class="w-full border rounded px-3 py-3 @error('email') border-red-500 @enderror">
+                @error('email')
                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>

@@ -131,7 +131,7 @@
                             {{ $utilisateur->email }}
                         </p>
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
-                            {{ $utilisateur->role->nom === 'Administrateur' ? 'bg-red-100 text-red-800' : 'bg-gray-200 text-gray-500' }}">
+                            {{ $utilisateur->role->nom === 'admin' ? 'bg-red-100 text-red-800' : 'bg-gray-200 text-gray-500' }}">
                             {{ $utilisateur->role->nom ?? 'Non défini' }}
                         </span>
                     </div>
