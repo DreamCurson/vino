@@ -26,12 +26,12 @@
 
                 <a href="{{ route('catalogue.index') }}"
                     class="border border-gray-300 px-4 py-3 rounded font-medium">
-                    Choisir une bouteille dans le catalogue
+                    Catalogue
                 </a>
 
                 <a href="{{ route('celliers.bouteilles.create', $cellier) }}"
                     class="bg-[#A83248] text-white px-4 py-3 rounded font-semibold">
-                    Ajouter une bouteille non listée
+                    Ajouter bouteille non listée
                 </a>
 
             </div>
@@ -118,6 +118,7 @@
                         </a>
                         @endif
 
+                        <!-- Modifier -->
                         @if($inventaire->bouteille && !$inventaire->bouteille->est_saq)
                         <a href="{{ route('celliers.bouteilles.edit', [$cellier, $inventaire->bouteille]) }}"
                             class="px-2 py-2 border border-gray-300 rounded hover:bg-gray-100 flex items-center justify-center"
@@ -127,7 +128,7 @@
                         </a>
                         @endif
                     </div>
-
+                    <!-- Supprimer -->
                     @if($inventaire->quantite == 0)
                     <form method="POST" action="{{ route('inventaires.destroy', $inventaire) }}" class="inline-flex">
                         @csrf
