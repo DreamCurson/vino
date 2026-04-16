@@ -14,15 +14,23 @@
                             <p class="text-xs text-gray-500">{{ $user->email }}</p>
                         </div>
                         <div class="my-2 flex justify-end">
-                            <a href="{{ route('profil.edit') }}" class="p-1 border border-gray-300 rounded flex items-center gap-2 text-gray-600 shadow w-max">
+                            <a href="{{ route('profil.edit') }}" class=" p-1 border border-gray-300 rounded flex items-center gap-2 text-gray-600 shadow w-max">
                                 <img src="{{ asset('images/icons/crayon.svg') }}" alt="" aria-hidden="true" class="w-6 h-6">
                             </a>
                         </div>
                     </div>
             </div>
                 <div class="flex flex-col gap-3 items-center">
-                    <a href="{{ route('deconnexion') }}" class="w-3/5 max-w-xs p-1 flex items-center justify-center border bg-[#7A1E2E] border-[#7A1E2E]  text-white rounded-md shadow">Se déconnecter</a>
-                    <button class="w-3/5 max-w-xs p-1 flex items-center justify-center border bg-white border-gray-300 rounded-md shadow">Supprimer mon compte</button>
+                    <a href="{{ route('deconnexion') }}" class="w-3/5 max-w-xs  p-1 flex items-center justify-center border bg-[#7A1E2E] border-[#7A1E2E]  text-white rounded-md shadow">Se déconnecter</a>
+                    <form method="POST" action="{{ route('profil.destroy') }}" class="w-3/5 max-w-xs">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                                onclick="return confirm('Es-tu sûr de vouloir supprimer ton compte?')"
+                                class="w-full  p-1 flex items-center justify-center border bg-white border-gray-300 rounded-md shadow">
+                                Supprimer mon compte
+                        </button>
+                    </form>
                 </div>
         </div>
 
