@@ -37,7 +37,7 @@
 
     <div class="w-[90px] flex justify-center items-center shrink-0">
         <img
-            src="{{ asset('images/bouteille-vide.png') }}"
+            src="{{ asset('images/bouteille-rack.svg') }}"
             alt="Illustration du cellier"
             class="w-auto h-[135px]">
     </div>
