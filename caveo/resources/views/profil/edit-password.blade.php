@@ -49,7 +49,7 @@
             </div>
                 <div class="flex justify-center mt-8">
                     <button type="submit" 
-                            class="w-2/5 max-w-xs p-1 flex items-center justify-center border bg-[#7A1E2E] border-[#7A1E2E]  text-white rounded-md shadow">
+                            class="w-2/5 max-w-xs p-1 flex items-center justify-center border bg-[#A83248] border-[#A83248]  text-white rounded-md shadow">
                         Sauvegarder
                     </button>
                 </div>
