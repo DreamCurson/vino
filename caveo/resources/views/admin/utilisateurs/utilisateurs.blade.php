@@ -4,7 +4,6 @@
 
 @section('content')
 
-<script type="module" src="{{ asset('js/filtre-utilisateurs.js') }}"></script>
 <script type='module' src="{{ asset('js/recherche.js') }}"></script>
 <script type='module' src="{{ asset('js/renitialiser-bouton.js') }}"></script>
 
@@ -20,18 +19,33 @@
             </p>
         </div>
 
-        <!-- Messages flash -->
-        @if(session('success'))
-        <div class="border-l-4 border-green-500 bg-green-50 text-green-700 p-3 mb-4 rounded" role="alert">
-            <p class="text-sm font-medium">{{ session('success') }}</p>
-        </div>
-        @endif
+        <x-alerts />
 
-        @if(session('error'))
-        <div class="border-l-4 border-red-500 bg-red-50 text-red-700 p-3 mb-4 rounded" role="alert">
-            <p class="text-sm font-medium">{{ session('error') }}</p>
+        <!-- Filtre par rôle -->
+        <div class="flex flex-wrap gap-2 mb-3">
+            <label class="cursor-pointer">
+                <input type="radio" name="role_id" value="" class="hidden peer"
+                    {{ request('role_id') == '' ? 'checked' : '' }}
+                    onchange="this.form.submit()">
+                <span class="inline-block px-4 py-2 rounded-full text-sm font-medium border
+                    peer-checked:bg-[#A83248] peer-checked:text-white peer-checked:border-[#A83248]
+                    bg-white text-[#1A1A1A] border-gray-300">
+                    Tous
+                </span>
+            </label>
+            @foreach($roles as $role)
+            <label class="cursor-pointer">
+                <input type="radio" name="role_id" value="{{ $role->id }}" class="hidden peer"
+                    {{ request('role_id') == $role->id ? 'checked' : '' }}
+                    onchange="this.form.submit()">
+                <span class="inline-block px-4 py-2 rounded-full text-sm font-medium border
+                    peer-checked:bg-[#A83248] peer-checked:text-white peer-checked:border-[#A83248]
+                    bg-white text-[#1A1A1A] border-gray-300">
+                    {{ $role->nom }}
+                </span>
+            </label>
+            @endforeach
         </div>
-        @endif
 
         <!-- Barre de recherche -->
         <div class="flex gap-2 items-stretch">
@@ -46,68 +60,6 @@
             </button>
         </div>
         <p class="italic font-bold text-sm md:text-base" style="color: #7A1E2E;">Se soumet automatiquement après 3 secondes</p>
-
-        <!-- Bouton Filtres -->
-        <div class="mt-2">
-            <button type="button" id="openFilters"
-                class="bg-[#A83248] text-white h-12 rounded w-full font-semibold">
-                Filtres
-            </button>
-        </div>
-    </div>
-
-    <!-- overlay -->
-    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
-
-    <!-- Panneau filtres -->
-    <div id="filterPanel" class="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl z-50 max-h-[90vh] flex flex-col translate-y-full transition-transform duration-300">
-
-        <!-- Entête des filtres -->
-        <div class="flex justify-between items-center p-4 border-b">
-            <h2 class="text-lg font-bold">Filtres</h2>
-            <button type="button" id="closeFilters" class="text-xl">✕</button>
-        </div>
-
-        <!-- Contenu scrollable -->
-        <div class="overflow-y-auto p-4 flex flex-col gap-6">
-
-            <!-- FILTRE PAR RÔLE -->
-            <div>
-                <label class="font-semibold block mb-2 text-sm">
-                    Filtrer par rôle
-                </label>
-                <div class="flex flex-col gap-2">
-                    <label class="flex items-center gap-2 text-sm">
-                        <input type="radio" name="role_id" value=""
-                            {{ request('role_id') == '' ? 'checked' : '' }}>
-                        Tous les rôles
-                    </label>
-                    @foreach($roles as $role)
-                    <label class="flex items-center gap-2 text-sm">
-                        <input type="radio" name="role_id" value="{{ $role->id }}"
-                            {{ request('role_id') == $role->id ? 'checked' : '' }}>
-                        {{ $role->nom }}
-                    </label>
-                    @endforeach
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Actions sticky -->
-        <div class="sticky bottom-0 bg-white z-50 border-t mb-5">
-            <div class="flex flex-row gap-4 pt-4">
-                <a href="{{ route('admin.utilisateurs.index') }}?recherche={{ request('recherche') }}"
-                    class="w-1/2 text-center border py-3 rounded font-medium text-sm">
-                    Réinitialiser
-                </a>
-                <button type="submit"
-                    class="w-1/2 bg-[#A83248] text-white py-3 rounded font-medium text-sm">
-                    Appliquer
-                </button>
-            </div>
-        </div>
-
     </div>
 </form>
 
