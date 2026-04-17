@@ -187,6 +187,71 @@
                 @endif
             </div>
 
+            <!-- Section Avis -->
+            <div class="mt-4 border-t border-[#E0E0E0] pt-4 font-roboto text-[#1A1A1A]">
+
+                <!-- Avis des utilisateurs -->
+                <div class="mb-4">
+                    <p class="mb-1 text-sm font-medium text-[#1A1A1A]">
+                        Avis des utilisateurs
+                    </p>
+
+                    @if ($nombreAvis > 0)
+                        <p class="text-sm text-gray-600">
+                            Moyenne : {{ number_format($moyenneAvis, 1, ',', ' ') }} / 5
+                            ({{ $nombreAvis }} avis)
+                        </p>
+                    @else
+                        <p class="text-sm text-gray-600">
+                            Aucun avis pour le moment.
+                        </p>
+                    @endif
+                </div>
+
+                <!-- Mon avis -->
+                <div>
+                    <p class="mb-1 text-sm font-medium text-[#1A1A1A]">
+                        Mon avis
+                    </p>
+
+                    @if ($avisUtilisateur)
+                        <p class="text-sm text-gray-700">
+                            Note : {{ number_format($avisUtilisateur->note, 1, ',', ' ') }} / 5
+                        </p>
+
+                        @if ($avisUtilisateur->commentaire)
+                            <p class="mt-2 whitespace-pre-line break-words text-sm text-gray-700">
+                                {{ $avisUtilisateur->commentaire }}
+                            </p>
+                        @endif
+
+                        @if ($avisUtilisateur->created_at == $avisUtilisateur->updated_at)
+                            <p class="mt-2 text-xs text-gray-500">
+                                Créé le {{ $avisUtilisateur->created_at->format('d/m/Y') }}
+                            </p>
+                        @else
+                            <p class="mt-2 text-xs text-gray-500">
+                                Modifié le {{ $avisUtilisateur->updated_at->format('d/m/Y') }}
+                            </p>
+                        @endif
+
+                        <a href="{{ route('avis.edit', $avisUtilisateur->id) }}"
+                            class="mt-4 w-full rounded border border-gray-300 px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 text-center block">
+                            Modifier mon avis
+                        </a>
+                    @else
+                        <p class="text-sm text-gray-600">
+                            Vous n'avez pas encore laissé d'avis.
+                        </p>
+
+                        <a href="{{ route('avis.create', $bouteille->id) }}"
+                            class="mt-4 w-full rounded bg-[#A83248] px-4 py-3 text-sm font-medium text-white text-center block">
+                            Ajouter mon avis
+                        </a>
+                    @endif
+                </div>
+
+            </div>
         </section>
     </div>
 @endsection
