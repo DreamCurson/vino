@@ -9,8 +9,10 @@ class Bouteille extends Model
 {
     use HasFactory;
 
+    // Nom de la table
     protected $table = 'bouteilles';
 
+    // Attributs
     protected $fillable = [
         'code_saq',
         'nom',
@@ -28,6 +30,7 @@ class Bouteille extends Model
         'description',
     ];
 
+    // Fonction permettant d'assigner un nom à chaque image de pastille de goût
     public function getImagePastilleAttribute()
     {
         $mapping = [
