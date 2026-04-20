@@ -66,8 +66,7 @@
         <div class="mt-3 flex items-center justify-between gap-3">
             <!-- Voir -->
             <a href="{{ route('celliers.show', $cellier) }}"
-                class="px-2 py-2 border border-gray-300 rounded hover:bg-gray-100 flex items-center gap-2 text-gray-600 w-max"
-                title="Voir le cellier">
+                class="px-2 py-2 border border-gray-300 rounded hover:bg-gray-100 flex items-center gap-2 text-gray-600 w-max">
                 <span class="text-sm">Voir le cellier</span>
             </a>
 
