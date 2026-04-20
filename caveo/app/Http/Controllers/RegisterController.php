@@ -33,10 +33,10 @@ class RegisterController extends Controller
         });
 
         // connecte automatiquement l'utilisateur créé,
-        // puis redirige vers l'accueil.
+        // puis redirige vers le login
         event(new Registered($utilisateur));
         Auth::login($utilisateur);
 
-        return redirect()->intended('/accueil');
+        return redirect()->intended('/connexion');
     }
 }
