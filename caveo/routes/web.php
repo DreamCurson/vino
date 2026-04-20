@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminUtilisateurController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BouteilleController;
 use App\Http\Controllers\CatalogueController;
@@ -7,6 +8,9 @@ use App\Http\Controllers\CellierController;
 use App\Http\Controllers\InventaireController;
 use App\Http\Controllers\ListeAchatController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\UtilisateurController;
+use App\Models\Bouteille;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -167,4 +171,31 @@ Route::middleware('auth')->group(function () {
 
   Route::patch('/achat/{liste}/bouteilles/{bouteille}/quantite', [ListeAchatController::class, 'updateQuantite'])
     ->name('achat.bouteilles.updateQuantite');
+
+  /*
+    |--------------------------------------------------------------------------
+    | Gestion profil
+    |--------------------------------------------------------------------------
+    */
+
+  Route::get('/profil', [UtilisateurController::class, 'show'])->name('profil.show');
+  Route::get('/profil/edit', [UtilisateurController::class, 'edit'])->name('profil.edit');
+  Route::post('/profil', [UtilisateurController::class, 'update'])->name('profil.update');
+
+  Route::get('/profil/password', [UtilisateurController::class, 'editPassword'])->name('profil.password.edit');
+  Route::post('/profil/password', [UtilisateurController::class, 'updatePassword'])->name('profil.password.update');
+
+  Route::delete('/profil', [UtilisateurController::class, 'destroy'])->name('profil.destroy');
+
+  /*
+    |--------------------------------------------------------------------------
+    | Administration (rôle admin requis)
+    |--------------------------------------------------------------------------
+    */
+
+  Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
+
+    Route::resource('utilisateurs', AdminUtilisateurController::class)
+      ->only(['index', 'edit', 'update']);
+  });
 });

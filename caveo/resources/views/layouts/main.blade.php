@@ -100,8 +100,12 @@
                 <p class="text-sm font-roboto font-medium wrap">Liste d'achat</p>
             </a>
 
-            <a href="#" class="flex flex-col items-center gap-1 px-3 py-1 ">
-                <img src="{{ asset('images/icons/profil-inactif.svg') }}" alt="Profil" class="w-6 h-6">
+            <a href="{{ route('profil.show') }}" class="flex flex-col items-center gap-1 px-3 py-1 ">
+                <img
+                    src="{{ request()->routeIs('profil.show')
+                                ? asset('images/icons/profil-actif.svg')
+                                : asset('images/icons/profil-inactif.svg') }}"
+                    alt="Profil" class="w-6 h-6">
                 <p class="text-sm font-roboto font-medium">Profil</p>
             </a>
         </div>
