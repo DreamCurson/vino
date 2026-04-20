@@ -56,7 +56,8 @@
             <div class="flex items-center gap-3 flex-shrink-0">
 
                 <a href="{{ route('achat.edit', $liste) }}"
-                    class="w-10 h-10 flex items-center justify-center border rounded hover:bg-gray-100">
+                    class="w-10 h-10 flex items-center justify-center border rounded hover:bg-gray-100"
+                    aria-label="Modifier la liste" title="Modifier la liste">
                     <img src="{{ asset('images/icons/crayon.svg') }}" class="w-6 h-6">
                 </a>
 
@@ -67,7 +68,7 @@
                     <button type="submit"
                         data-confirm="Supprimer cette liste ?"
                         class="bouton-supprimer w-10 h-10 flex items-center justify-center border rounded hover:bg-gray-100"
-                        aria-label="Supprimer la liste">
+                        aria-label="Supprimer la liste" title="Supprimer la liste">
                         <img src="{{ asset('images/icons/poubelle.svg') }}" class="w-6 h-6">
                     </button>
                 </form>
@@ -101,7 +102,7 @@
                                 </button>
 
                                 <!-- quantité -->
-                               <span class="w-6 text-center text-sm text-gray-700 font-bold">
+                                <span class="w-6 text-center text-sm text-gray-700 font-bold">
                                     {{ $bouteille->pivot->quantite }}
                                 </span>
 
