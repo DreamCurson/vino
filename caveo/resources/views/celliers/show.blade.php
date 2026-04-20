@@ -48,6 +48,10 @@
     </div>
 
     <x-alerts />
+    <div class="mt-4 mb-6 p-3 bg-gray-50 border border-gray-200 rounded text-xs text-gray-600 italic space-y-1">
+        <p>* Mettre 0 indique que la bouteille a été bue et pouvoir la supprimer.</p>
+        <p>* Seules les bouteilles non listées sont modifiables.</p>
+    </div>
 
     <div class="space-y-4 pb-20">
         @forelse($cellier->inventaires as $inventaire)
@@ -135,7 +139,7 @@
 
                         <button type="submit"
                             class="bouton-supprimer px-2 py-2 border border-gray-300 text-gray-600 rounded hover:bg-gray-100 flex items-center justify-center"
-                            data-confirm="Supprimer cette bouteille ?" aria-label="Supprimer la bouteille">
+                            data-confirm="Supprimer cette bouteille ?" aria-label="Supprimer la bouteille" title="Supprimer la bouteille">
                             <img src="{{ asset('images/icons/poubelle.svg') }}" alt="" aria-hidden="true"
                                 class="w-6 h-6">
                         </button>
@@ -176,21 +180,13 @@
                 </div>
 
                 <div class="mt-1">
-
-                    @if($inventaire->quantite > 0)
-                    <p class="text-xs text-gray-400 italic">
-                        * Mettre 0 indique que la bouteille a été bue. <br>
-                        * Seules les bouteilles non listées sont modifiables.
-                    </p>
-                    @endif
-
                     @if($inventaire->quantite == 0)
                     <p class="text-xs text-red-500 mt-1">
                         Cette bouteille a été bue.
                     </p>
                     @endif
-
                 </div>
+
             </div>
         </div>
         @empty

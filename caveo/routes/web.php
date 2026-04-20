@@ -17,16 +17,29 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
+| Ce fichier regroupe les routes Web de l'application Caveo.
+| Les routes sont organisées par niveau d'accès et par domaine
+| fonctionnel afin de faciliter la lecture et la maintenance.
 */
 
 /*
 |--------------------------------------------------------------------------
 | Routes publiques / authentification
 |--------------------------------------------------------------------------
+| Ces routes sont accessibles sans connexion.
+| Elles permettent d'afficher la page d'accueil, la connexion
+| et l'inscription.
 */
 
-Route::get('/', [AuthController::class, 'create'])->name('connexion');
-Route::post('/', [AuthController::class, 'store'])->name('auth.store');
+Route::get('/', function () {
+  return view('welcome');
+})->name('accueil');
+
+Route::get('/connexion', [AuthController::class, 'create'])
+  ->name('connexion');
+
+Route::post('/connexion', [AuthController::class, 'store'])
+  ->name('auth.store');
 
 Route::get('/inscription', function () {
   return view('auth.inscription');
@@ -39,6 +52,8 @@ Route::post('/inscription', [RegisterController::class, 'store'])
 |--------------------------------------------------------------------------
 | Routes protégées
 |--------------------------------------------------------------------------
+| Ces routes sont accessibles uniquement aux utilisateurs
+| authentifiés.
 */
 
 Route::middleware('auth')->group(function () {
@@ -47,18 +62,17 @@ Route::middleware('auth')->group(function () {
     |--------------------------------------------------------------------------
     | Navigation générale
     |--------------------------------------------------------------------------
+    | Routes globales accessibles après connexion.
     */
 
-  Route::get('/accueil', function () {
-    return view('welcome');
-  })->name('accueil');
-
-  Route::get('/deconnexion', [AuthController::class, 'destroy'])->name('deconnexion');
+  Route::get('/deconnexion', [AuthController::class, 'destroy'])
+    ->name('deconnexion');
 
   /*
     |--------------------------------------------------------------------------
     | Catalogue / bouteilles
     |--------------------------------------------------------------------------
+    | Affichage du catalogue et consultation des fiches bouteilles.
     */
 
   Route::get('/catalogue', [CatalogueController::class, 'index'])
@@ -76,6 +90,7 @@ Route::middleware('auth')->group(function () {
     |--------------------------------------------------------------------------
     | Celliers
     |--------------------------------------------------------------------------
+    | Gestion complète des celliers de l'utilisateur connecté.
     */
 
   Route::resource('celliers', CellierController::class);
@@ -84,6 +99,8 @@ Route::middleware('auth')->group(function () {
     |--------------------------------------------------------------------------
     | Inventaires
     |--------------------------------------------------------------------------
+    | Ajout, modification de quantité et suppression d'une bouteille
+    | dans un cellier.
     */
 
   Route::post('/celliers/{cellier}/inventaires', [InventaireController::class, 'store'])
@@ -102,6 +119,8 @@ Route::middleware('auth')->group(function () {
     |--------------------------------------------------------------------------
     | Bouteilles non listées liées à un cellier
     |--------------------------------------------------------------------------
+    | Permet d'ajouter, modifier et supprimer des bouteilles
+    | personnalisées créées manuellement par l'utilisateur.
     */
 
   Route::get('/celliers/{cellier}/bouteilles/create', [BouteilleController::class, 'createFromCellier'])
@@ -121,17 +140,28 @@ Route::middleware('auth')->group(function () {
 
   /*
     |--------------------------------------------------------------------------
-    | Listes d’achat
+    | Listes d'achat
     |--------------------------------------------------------------------------
+    | Gestion des listes d'achat et des bouteilles qui y sont associées.
     */
 
-  Route::get('/achat', [ListeAchatController::class, 'index'])->name('achat.index');
-  Route::get('/achat/creation', [ListeAchatController::class, 'create'])->name('achat.create');
-  Route::post('/achat/creation', [ListeAchatController::class, 'store'])->name('achat.store');
+  Route::get('/achat', [ListeAchatController::class, 'index'])
+    ->name('achat.index');
 
-  Route::get('/achat/{liste}', [ListeAchatController::class, 'edit'])->name('achat.edit');
-  Route::put('/achat/{liste}', [ListeAchatController::class, 'update'])->name('achat.update');
-  Route::delete('/achat/{liste}', [ListeAchatController::class, 'destroy'])->name('achat.destroy');
+  Route::get('/achat/creation', [ListeAchatController::class, 'create'])
+    ->name('achat.create');
+
+  Route::post('/achat/creation', [ListeAchatController::class, 'store'])
+    ->name('achat.store');
+
+  Route::get('/achat/{liste}', [ListeAchatController::class, 'edit'])
+    ->name('achat.edit');
+
+  Route::put('/achat/{liste}', [ListeAchatController::class, 'update'])
+    ->name('achat.update');
+
+  Route::delete('/achat/{liste}', [ListeAchatController::class, 'destroy'])
+    ->name('achat.destroy');
 
   Route::post('/achat/{liste}/bouteilles', [ListeAchatController::class, 'addBouteille'])
     ->name('achat.bouteilles.add');
