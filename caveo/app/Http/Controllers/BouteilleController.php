@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bouteille;
 use App\Models\Inventaire;
 use App\Models\Cellier;
+use App\Models\Avis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -46,10 +47,38 @@ class BouteilleController extends Controller
             }
         }
 
+        // Récupère l'avis de l'utilisateur
+        $avisUtilisateur = null;
+
+        if (Auth::check()) {
+            $avisUtilisateur = Avis::where('id_utilisateur', Auth::id())
+                ->where('id_bouteille', $bouteille->id)
+                ->first();
+        }
+
+        // Récupère la moyenne des avis
+        $moyenneAvis = Avis::where('id_bouteille', $bouteille->id)
+            ->avg('note');
+
+        // Récupère le nombre total d'avis
+        $nombreAvis = Avis::where('id_bouteille', $bouteille->id)
+            ->count();
+
+        // Arrondi la moyenne au 0.5 pour l'affichage en étoiles
+        $moyenneAvisArrondie = null;
+
+        if ($moyenneAvis !== null) {
+            $moyenneAvisArrondie = round($moyenneAvis * 2) / 2;
+        }
+
         return view('bouteilles.show', [
             'bouteille' => $bouteille,
             'source' => $source,
             'inventaire' => $inventaire,
+            'avisUtilisateur' => $avisUtilisateur,
+            'moyenneAvis' => $moyenneAvis,
+            'moyenneAvisArrondie' => $moyenneAvisArrondie,
+            'nombreAvis' => $nombreAvis,
         ]);
     }
 

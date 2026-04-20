@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Avis;
 
 class Utilisateur extends Authenticatable
 {
@@ -83,5 +84,15 @@ class Utilisateur extends Authenticatable
     public function celliers()
     {
         return $this->hasMany(Cellier::class, 'id_utilisateur');
+    }
+
+    /**
+     * Retourne les avis laissés par l'utilisateur.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function avis()
+    {
+        return $this->hasMany(Avis::class, 'id_utilisateur');
     }
 }

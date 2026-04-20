@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminUtilisateurController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BouteilleController;
 use App\Http\Controllers\CatalogueController;
+use App\Http\Controllers\AvisController;
 use App\Http\Controllers\CellierController;
 use App\Http\Controllers\InventaireController;
 use App\Http\Controllers\ListeAchatController;
@@ -85,6 +86,24 @@ Route::middleware('auth')->group(function () {
         ->route('catalogue.index')
         ->with('status', 'Cette bouteille est introuvable.');
     });
+
+  /*
+    |--------------------------------------------------------------------------
+    | Avis
+    |--------------------------------------------------------------------------
+    */
+
+  Route::get('/avis/create/{bouteille}', [AvisController::class, 'create'])
+    ->name('avis.create');
+
+  Route::post('/avis', [AvisController::class, 'store'])
+    ->name('avis.store');
+
+  Route::get('/avis/{avis}/edit', [AvisController::class, 'edit'])
+    ->name('avis.edit');
+  
+  Route::patch('/avis/{avis}', [AvisController::class, 'update'])
+    ->name('avis.update');
 
   /*
     |--------------------------------------------------------------------------
