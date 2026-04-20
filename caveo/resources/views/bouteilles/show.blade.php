@@ -197,10 +197,13 @@
                     </p>
 
                     @if ($nombreAvis > 0)
-                        <p class="text-sm text-gray-600">
-                            Moyenne : {{ number_format($moyenneAvis, 1, ',', ' ') }} / 5
-                            ({{ $nombreAvis }} avis)
-                        </p>
+                        <div class="flex items-center gap-2">
+                            <img src="{{ asset('images/etoiles/etoiles-' . str_replace('.', '-', round($moyenneAvis * 2) / 2) . '.svg') }}"
+                                alt="Note moyenne" class="h-5 w-auto">
+                            <span class="text-sm text-gray-600">
+                                ({{ $nombreAvis }} avis)
+                            </span>
+                        </div>
                     @else
                         <p class="text-sm text-gray-600">
                             Aucun avis pour le moment.
@@ -209,15 +212,16 @@
                 </div>
 
                 <!-- Mon avis -->
-                <div>
-                    <p class="mb-1 text-sm font-medium text-[#1A1A1A]">
+                <div class="bg-white rounded-xl p-4 mt-4 border border-[#E0E0E0]">
+                    <p class="flex justify-center mb-1 text-base font-medium text-[#1A1A1A]">
                         Mon avis
                     </p>
 
                     @if ($avisUtilisateur)
-                        <p class="text-sm text-gray-700">
-                            Note : {{ number_format($avisUtilisateur->note, 1, ',', ' ') }} / 5
-                        </p>
+                        <div class="flex justify-center mb-2 mt-3">
+                            <img src="{{ asset('images/etoiles/etoiles-' . str_replace('.', '-', round($avisUtilisateur->note * 2) / 2) . '.svg') }}"
+                                alt="Ma note" class="h-8 w-auto">
+                        </div>
 
                         @if ($avisUtilisateur->commentaire)
                             <p class="mt-2 whitespace-pre-line break-words text-sm text-gray-700">
@@ -236,16 +240,16 @@
                         @endif
 
                         <a href="{{ route('avis.edit', $avisUtilisateur->id) }}"
-                            class="mt-4 w-full rounded border border-gray-300 px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 text-center block">
+                            class="mt-4 mb-1 w-full rounded border border-gray-300 px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 text-center block">
                             Modifier mon avis
                         </a>
                     @else
-                        <p class="text-sm text-gray-600">
+                        <p class="text-sm mt-3 text-gray-600">
                             Vous n'avez pas encore laissé d'avis.
                         </p>
 
                         <a href="{{ route('avis.create', $bouteille->id) }}"
-                            class="mt-4 w-full rounded bg-[#A83248] px-4 py-3 text-sm font-medium text-white text-center block">
+                            class="mt-4 mb-1 w-full rounded bg-[#A83248] px-4 py-3 text-sm font-medium text-white text-center block">
                             Ajouter mon avis
                         </a>
                     @endif
