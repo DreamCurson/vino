@@ -235,10 +235,12 @@
         </div>
 
         <div class="flex gap-1 flex-wrap">
+            @if(optional(Auth::user()->role)->nom !== 'admin')
             <a href="{{ route('bouteilles.show', $bouteille->id) }}?source=catalogue"
                 class="px-2 py-2 border border-gray-300 rounded hover:bg-gray-100 flex items-center gap-2 w-max" title="Détail de la bouteille">
                 <img src="{{ asset('images/symbole/info.svg') }}" alt="information" class="w-6 h-6">
             </a>
+
 
             @if($celliers->isNotEmpty())
             <button type="button"
@@ -269,6 +271,7 @@
                 title="Créer une liste d'achat">
                 <img src="{{ asset('images/icons/liste.svg') }}" class="w-6 h-6">
             </a>
+            @endif
             @endif
         </div>
     </div>

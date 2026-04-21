@@ -33,6 +33,7 @@ class Authenticate extends Middleware
             && ! $request->routeIs('admin.*')
             && ! $request->routeIs('accueil')
             && ! $request->routeIs('deconnexion')
+            && ! $request->routeIs('catalogue.index')
         ) {
             return redirect()->route('admin.utilisateurs.index');
         }
