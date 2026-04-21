@@ -48,6 +48,7 @@ class InventaireController extends Controller
 
         if ($inventaire) {
             $inventaire->quantite += $validated['quantite'];
+            $inventaire->date_ajout = now();
             $inventaire->save();
 
             if (request()->expectsJson()) {
@@ -120,9 +121,18 @@ class InventaireController extends Controller
             'quantite.max' => 'La quantité ne peut pas dépasser 999.',
         ]);
 
-        $inventaire->update([
-            'quantite' => $validated['quantite'],
-        ]);
+        $ancienneQuantite = $inventaire->quantite;
+        $nouvelleQuantite = $validated['quantite'];
+
+        $donnees = [
+            'quantite' => $nouvelleQuantite,
+        ];
+
+        if ($nouvelleQuantite > $ancienneQuantite) {
+            $donnees['date_ajout'] = now();
+        }
+
+        $inventaire->update($donnees);
 
         if ($request->input('source_page') === 'bouteille') {
             return redirect()->to(

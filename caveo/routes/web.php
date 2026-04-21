@@ -11,6 +11,9 @@ use App\Http\Controllers\InventaireController;
 use App\Http\Controllers\ListeAchatController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UtilisateurController;
+use App\Http\Controllers\StatistiqueController;
+use App\Models\Bouteille;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -204,6 +207,14 @@ Route::middleware('auth')->group(function () {
   Route::post('/profil/password', [UtilisateurController::class, 'updatePassword'])->name('profil.password.update');
 
   Route::delete('/profil', [UtilisateurController::class, 'destroy'])->name('profil.destroy');
+
+  /*
+    |--------------------------------------------------------------------------
+    | Statistiques
+    |--------------------------------------------------------------------------
+    */
+
+  Route::get('/statistiques', [StatistiqueController::class, 'index'])->name('statistiques.index');
 
   /*
     |--------------------------------------------------------------------------

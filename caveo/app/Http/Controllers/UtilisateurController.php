@@ -16,8 +16,26 @@ class UtilisateurController extends Controller
      */
     public function show(Utilisateur $utilisateur)
     {
+        
+        $utilisateur = Auth::user()->load('celliers.inventaires.bouteille');
+
+        // Regroupe tous les inventaires de tous les cellier
+        $inventaires = $utilisateur->celliers->flatMap(function ($cellier) {
+            return $cellier->inventaires;
+        });
+
+        //Calcul la valeur totale
+        $valeurTotale = $inventaires->sum(function ($inv) {
+            return $inv->quantite * ($inv->bouteille->prix ?? 0);
+        });
+
+        //Calcul le nombre total de bouteilles
+        $totalBouteilles = $inventaires->sum('quantite');
+
         return view('profil.show', [
-            'user' => Auth::user()
+            'utilisateur' => $utilisateur,
+            'valeurTotale' => $valeurTotale,
+            'totalBouteilles' => $totalBouteilles,
         ]);
     }
 
@@ -27,7 +45,7 @@ class UtilisateurController extends Controller
     public function edit(Utilisateur $utilisateur)
     {
         return view('profil.edit', [
-            'user' => Auth::user()
+            'utilisateur' => Auth::user()
         ]);
     }
 

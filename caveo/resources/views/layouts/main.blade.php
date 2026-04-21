@@ -32,6 +32,9 @@
 
 <body class="flex flex-col min-h-screen">
     <header class="bg-[#7A1E2E] relative py-4">
+        <div class="absolute left-4 top-1/2 -translate-y-1/2">
+            @yield('deconnexion')
+        </div>
         <div class="absolute right-4 top-1/2 -translate-y-1/2">
             @yield('fleche')
         </div>

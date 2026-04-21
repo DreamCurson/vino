@@ -22,7 +22,7 @@
                         <label id="prenom" for="prenom" class="block text-md font-medium text-gray-500">
                             Prénom</label>
                         <input type="text" name="prenom" 
-                                value="{{ $user->prenom }}" 
+                                value="{{ $utilisateur->prenom }}" 
                                 class="block w-full border-2 text-[#1A1A1A] rounded-lg p-1 focus:outline-none focus:ring-1 focus:ring-[#A83248] focus:border-[#A83248] @error ('prenom') border-red-600 @enderror">
                         @error('prenom')
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -32,7 +32,7 @@
                         <label id="nom" for="nom" class="block text-md font-medium text-gray-500">
                             Nom</label>
                         <input type="text" name="nom" 
-                                value="{{ $user->nom }}" 
+                                value="{{ $utilisateur->nom }}" 
                                 class="block w-full border-2 text-[#1A1A1A] rounded-lg p-1 focus:outline-none focus:ring-1 focus:ring-[#A83248] focus:border-[#A83248] @error ('nom') border-red-600 @enderror">
                         @error('nom')
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -47,7 +47,7 @@
                             <label for="email" class="block text-md font-medium text-gray-500">
                                 Adresse courriel</label>
                             <input id="email" type="email" name="email" 
-                                    value="{{ $user->email }}" 
+                                    value="{{ $utilisateur->email }}" 
                                     class="block w-full border-2 text-[#1A1A1A] rounded-lg p-1 focus:outline-none focus:ring-1 focus:ring-[#A83248] focus:border-[#A83248] @error ('email') border-red-600 @enderror">
                             @error('email')
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
