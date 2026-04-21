@@ -56,6 +56,16 @@
                 <p class="text-sm font-roboto font-medium">Accueil</p>
             </a>
 
+            <a href="{{ route('catalogue.index') }}" class="flex flex-col items-center gap-1 px-3 py-1">
+                <img
+                    src="{{ request()->routeIs('catalogue.index')
+                                ? asset('images/icons/loop-actif.svg')
+                                : asset('images/icons/loop-inactif.svg') }}"
+                    alt="Catalogue"
+                    class="w-6 h-6 object-contain">
+                <p class="text-sm font-roboto font-medium">Catalogue</p>
+            </a>
+
             <a href="{{ route('admin.utilisateurs.index') }}" class="flex flex-col items-center gap-1 px-3 py-1">
                 <img src="{{ request()->routeIs('admin.utilisateurs.*')
                         ? asset('images/icons/profil-actif.svg')
