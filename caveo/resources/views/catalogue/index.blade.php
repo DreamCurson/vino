@@ -142,6 +142,10 @@
     </div>
 </form>
 
+<div class="m-4">
+    <x-alerts />
+</div>
+
 <div class="m-3 text-sm">
 
     <!-- Recherche -->
