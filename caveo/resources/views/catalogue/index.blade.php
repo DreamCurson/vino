@@ -142,6 +142,10 @@
     </div>
 </form>
 
+<div class="m-4 message-flash-auto">
+    <x-alerts />
+</div>
+
 <div class="m-3 text-sm">
 
     <!-- Recherche -->
@@ -370,10 +374,10 @@
 
                     </div>
 
-                    <input type="hidden" name="quantite" id="cellierQuantite" value="1">
                 </div>
 
-                <input type="hidden" name="quantite" id="modalQuantite" value="1">
+                <input type="hidden" name="quantite" id="cellierQuantite" value="1">
+                <input type="hidden" name="redirect_url" value="{{ url()->full() }}">
 
                 {{-- Actions --}}
                 <div class="flex gap-3">

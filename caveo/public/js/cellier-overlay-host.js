@@ -1,103 +1,75 @@
-// NE PAS MODIFIÉ - BACKUP DU HOST POUR SUPPORTER /PUBLIC
-
 document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById("addToCellierModal");
-    const overlay = document.getElementById("overlay");
-    const closeBtn = document.getElementById("closeModal");
+    const overlay = document.getElementById("cellierOverlay");
+    const closeBtn = document.getElementById("closeCellierModal");
 
     const bouteilleIdInput = document.getElementById("modalBouteilleId");
     const bouteilleNomText = document.getElementById("modalBouteilleNom");
     const cellierSelect = document.getElementById("modalCellierSelect");
     const form = document.getElementById("addToCellierForm");
 
-    /**
-     * OUVERTURE DE LA MODALE
-     * Boutons "Ajouter au cellier" dans le catalogue
-     */
+    const quantiteInput = document.getElementById("cellierQuantite");
+    const quantiteDisplay = document.getElementById("cellierQuantiteDisplay");
+    const minusBtn = document.getElementById("cellierMinusBtn");
+    const plusBtn = document.getElementById("cellierPlusBtn");
+
+    let quantite = 1;
+
+    function updateFormAction() {
+        const cellierId = cellierSelect.value;
+        form.action = `/public/celliers/${cellierId}/inventaires`;
+        form.method = "POST";
+    }
+
+    function resetQuantite() {
+        quantite = 1;
+        quantiteInput.value = 1;
+        quantiteDisplay.textContent = 1;
+    }
+
     document.querySelectorAll(".openAddToCellierModal").forEach((button) => {
         button.addEventListener("click", () => {
-            const bouteilleId = button.dataset.bouteilleId;
-            const bouteilleNom = button.dataset.bouteilleNom;
+            bouteilleIdInput.value = button.dataset.bouteilleId;
+            bouteilleNomText.textContent = button.dataset.bouteilleNom;
 
-            // Injecter les données
-            bouteilleIdInput.value = bouteilleId;
-            bouteilleNomText.textContent = bouteilleNom;
+            resetQuantite();
+            updateFormAction();
 
-            // Mettre à jour l'action du formulaire
-            form.action = `/public/celliers/${cellierSelect.value}/inventaires`;
-
-            // Reset quantité
-            document.getElementById("modalQuantite").value = 1;
-            document.getElementById("modalQuantiteDisplay").textContent = 1;
-
-            // Assurez-vous que la méthode est bien POST
-            form.method = "POST"; // Assurez-vous que la méthode est POST
-            // Afficher modale
             modal.classList.remove("hidden");
             if (overlay) overlay.classList.remove("hidden");
         });
     });
 
-    /**
-     * FERMETURE
-     */
     function closeModal() {
         modal.classList.add("hidden");
         if (overlay) overlay.classList.add("hidden");
     }
 
-    closeBtn.addEventListener("click", closeModal);
+    if (closeBtn) closeBtn.addEventListener("click", closeModal);
+    if (overlay) overlay.addEventListener("click", closeModal);
 
-    if (overlay) {
-        overlay.addEventListener("click", closeModal);
-    }
-
-    /**
-     * ESC clavier
-     */
     document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-            closeModal();
-        }
+        if (e.key === "Escape") closeModal();
     });
 
-    /**
-     * Mise à jour dynamique du cellier sélectionné
-     */
-    cellierSelect.addEventListener("change", () => {
-        form.action = `/public/celliers/${cellierSelect.value}/inventaires`;
+    cellierSelect.addEventListener("change", updateFormAction);
+
+    form.addEventListener("submit", () => {
+        updateFormAction();
+        form.method = "POST";
     });
 
-    /**
-     * Gestion quantité + / -
-     */
     function updateModalQty(delta) {
-        const input = document.getElementById("modalQuantite");
-        const display = document.getElementById("modalQuantiteDisplay");
+        quantite = parseInt(quantiteInput.value, 10) || 1;
+        quantite += delta;
 
-        let value = parseInt(input.value, 10) || 1;
-        value += delta;
+        if (quantite < 1) quantite = 1;
+        if (quantite > 999) quantite = 999;
 
-        if (value < 1) value = 1;
-        if (value > 999) value = 999;
-
-        input.value = value;
-        display.textContent = value;
+        quantiteInput.value = quantite;
+        quantiteDisplay.textContent = quantite;
     }
 
-    // Attach event listeners for quantity change buttons
-    const minusBtn = document.querySelector(
-        "#addToCellierModal button[aria-label='Diminuer la quantité']",
-    );
-    const plusBtn = document.querySelector(
-        "#addToCellierModal button[aria-label='Augmenter la quantité']",
-    );
-
-    if (minusBtn) {
-        minusBtn.addEventListener("click", () => updateModalQty(-1));
-    }
-
-    if (plusBtn) {
-        plusBtn.addEventListener("click", () => updateModalQty(1));
-    }
+    if (minusBtn) minusBtn.addEventListener("click", () => updateModalQty(-1));
+    if (plusBtn) plusBtn.addEventListener("click", () => updateModalQty(1));
 });
