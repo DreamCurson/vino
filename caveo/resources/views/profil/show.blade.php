@@ -3,7 +3,7 @@
 @section('content')
 @section('deconnexion')
 <a href="{{ route('deconnexion') }}" class="text-white text-2xl leading-none" aria-label="Deconnexion">
-    <img src="/images/icons/deconnexion.svg" alt="Deconnexion" class="w-10 h-10">
+    <img src="/images/icons/deconnexion-blanc.svg" alt="Deconnexion" class="w-8 h-8">
 </a>
 @endsection
     <script type="module" src="{{ asset('js/message-flash-auto.js') }}"></script>
