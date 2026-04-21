@@ -180,7 +180,7 @@ class ListeAchatController extends Controller
             ['quantite' => $validated['quantite']]
         );
 
-        return back();
+        return back()->with('status', 'La bouteille a été ajoutée à votre liste d\'achat.');
     }
 
     /**
