@@ -24,8 +24,8 @@
             <div class="flex gap-3 flex-wrap">
 
                 <a href="{{ route('catalogue.index') }}"
-                    class="border border-gray-300 px-4 py-3 rounded font-medium">
-                    Catalogue
+                    class="px-3 py-2 rounded font-medium">
+                    <img src="{{ asset('images/icons/loop-actif.svg') }}" alt="">
                 </a>
 
                 <a href="{{ route('celliers.bouteilles.create', $cellier) }}"
