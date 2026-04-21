@@ -16,8 +16,8 @@ document.querySelectorAll(".toggle-liste").forEach((el) => {
         target.ariaExpanded = !isHidden; //pour les lecteurs d'écran
 
         //pour gérer le triangle "ouvert/fermer"
-        e.currentTarget.querySelector("h2 span.open").classList.toggle("hidden", !hasClass);
-        e.currentTarget.querySelector("h2 span.close").classList.toggle("hidden", hasClass);
+        e.currentTarget.querySelector("h2 span.open").classList.toggle("hidden", !isHidden);
+        e.currentTarget.querySelector("h2 span.close").classList.toggle("hidden", isHidden);
 
         // Sauvegarde temporairement si ouvert ou fermer
         if (target.classList.contains("hidden")) {
