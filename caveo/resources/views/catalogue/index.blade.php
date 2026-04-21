@@ -235,7 +235,7 @@
             </div>
 
             @if(optional(Auth::user()->role)->nom === 'admin')
-            <a href="{{ url('/admin/bouteilles/' . $bouteille->id . '/edit') }}"
+            <a href="{{ route('admin.bouteilles.edit', $bouteille) }}"
                 class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100 shrink-0"
                 title="Modifier la bouteille"
                 aria-label="Modifier la bouteille">

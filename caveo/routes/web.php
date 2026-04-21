@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminBouteilleController;
 use App\Http\Controllers\AdminUtilisateurController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BouteilleController;
@@ -214,5 +215,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('utilisateurs', AdminUtilisateurController::class)
       ->only(['index', 'edit', 'update']);
+
+    Route::resource('bouteilles', AdminBouteilleController::class)
+      ->only(['edit', 'update']);
   });
 });
