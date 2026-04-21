@@ -8,12 +8,21 @@ use App\Models\Bouteille;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Contrôleur des listes d'achat.
+ *
+ * Gère :
+ * - l'affichage des listes d'achat de l'utilisateur
+ * - la création, modification et suppression de listes
+ * - la gestion des bouteilles dans une liste (ajout, suppression, quantité)
+ */
 class ListeAchatController extends Controller
 {
+    /**
+     * Affiche toutes les listes d'achat de l'utilisateur connecté
+     * avec les bouteilles associées.
+     */
     public function index(){
-        /**
-         * Liste d'achat de l'utilisateur connecté avec ses bouteilles.
-         */
         $listes = collect();
 
         if (Auth::check()) {
@@ -26,10 +35,22 @@ class ListeAchatController extends Controller
         return view('liste-achat.index', ['listes' => $listes]);
     }
 
+    /**
+     * Affiche le formulaire de création d'une liste d'achat.
+     */
     public function create(){
         return view('liste-achat.create');
     }
 
+    /**
+     * Enregistre une nouvelle liste d'achat.
+     *
+     * Étapes :
+     * - valide les données du formulaire
+     * - associe la liste à l'utilisateur connecté
+     * - enregistre la liste en base de données
+     * 
+     */
     public function store(Request $request)
     {
         $utilisateur = Auth::user();
@@ -49,6 +70,10 @@ class ListeAchatController extends Controller
             ->route('achat.index');
     }
 
+    /**
+     * Affiche le formulaire de modification d'une liste d'achat.
+     * Vérifie que l'utilisateur est bien propriétaire de la liste.
+     */
     public function edit(ListeAchat $liste)
     {
         $this->verifierProprietaire($liste);
@@ -56,6 +81,15 @@ class ListeAchatController extends Controller
         return view('liste-achat.edit', compact('liste'));
     }
 
+    /**
+     * Met à jour une liste d'achat existante.
+     *
+     * Étapes :
+     * - vérifie le propriétaire
+     * - valide les données
+     * - met à jour les informations de la liste
+     *
+     */
     public function update(Request $request, ListeAchat $liste)
     {
         $this->verifierProprietaire($liste);
@@ -75,6 +109,10 @@ class ListeAchatController extends Controller
             ->with('status', 'La liste d\'achat a été modifié avec succès.');
     }
 
+    /**
+     * Supprime une liste d'achat.
+     * Vérifie que l'utilisateur est propriétaire avant suppression.
+     */
     public function destroy(ListeAchat $liste)
     {
         $this->verifierProprietaire($liste);
@@ -86,6 +124,9 @@ class ListeAchatController extends Controller
             ->with('status', 'La liste d\'achat a été supprimé avec succès.');
     }
 
+    /**
+     * Vérifie que la liste appartient à l'utilisateur connecté.
+     */
     private function verifierProprietaire(ListeAchat $liste): void
     {
         $utilisateur = Auth::user();
@@ -95,6 +136,16 @@ class ListeAchatController extends Controller
         }
     }
 
+    /**
+     * Ajoute une bouteille à une liste d'achat.
+     *
+     * Étapes :
+     * - valide les données
+     * - vérifie si la bouteille existe déjà dans la liste
+     *   - si oui : met à jour la quantité
+     *   - sinon : ajoute la bouteille avec la quantité
+     *
+     */
     public function addBouteille(Request $request, ListeAchat $liste)
     {
         $validated = $request->validate([
@@ -132,6 +183,10 @@ class ListeAchatController extends Controller
         return back();
     }
 
+    /**
+     * Retire une bouteille d'une liste d'achat.
+     * Vérifie que l'utilisateur est propriétaire de la liste.
+     */
     public function removeBouteille(ListeAchat $liste, Bouteille $bouteille)
     {
         if ($liste->id_utilisateur !== auth()->id()) {
@@ -143,11 +198,22 @@ class ListeAchatController extends Controller
         return back()->with('success', 'Bouteille retirée de la liste.');
     }
 
+    /**
+     * Met à jour la quantité d'une bouteille dans une liste d'achat.
+     *
+     * Actions possibles :
+     * - increment : augmente la quantité de 1
+     * - decrement : diminue la quantité sans descendre sous 1
+     *
+     */
     public function updateQuantite(Request $request, $listeId, $bouteilleId)
     {
         $liste = ListeAchat::findOrFail($listeId);
 
-        $bouteille = $liste->bouteilles()->where('liste_achat_bouteille.id_bouteille', $bouteilleId)->firstOrFail();
+        $bouteille = $liste->bouteilles()
+            ->where('liste_achat_bouteille.id_bouteille', $bouteilleId)
+            ->firstOrFail();
+
         $pivot = $bouteille->pivot;
 
         if ($request->action === 'increment') {
