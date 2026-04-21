@@ -257,13 +257,13 @@
                 data-bouteille-nom="{{ $bouteille->nom }}"
                 title="Ajouter à la liste d'achats"
                 aria-label="Ajouter à la liste d'achats">
-                <img src="{{ asset('images/icons/liste.svg') }}" class="w-6 h-6">
+                <img src="{{ asset('images/icons/liste-ajouter.svg') }}" class="w-8 h-8">
             </button>
             @else
             <a href="{{ route('achat.create') }}"
                 class="ml-auto px-2 py-2 border border-gray-300 rounded hover:bg-gray-100 flex items-center gap-2 w-max"
                 title="Créer une liste d'achat">
-                <img src="{{ asset('images/icons/liste.svg') }}" class="w-6 h-6">
+                <img src="{{ asset('images/icons/liste.svg') }}" class="w-8 h-8">
             </a>
             @endif
         </div>
