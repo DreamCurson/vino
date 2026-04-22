@@ -13,7 +13,7 @@
         <a href="{{ url()->previous() }}">
     @else
         <!-- fallback: Retourne de 3 pages si ont est aller dans les reviews -->
-        <a href="#" onclick="history.go(-3); return false;">
+        <a href="#" id="js-back-3">
     @endif
         <img src="{{ asset('images/fleches/gauche-blanc.svg') }}" class="w-10 h-10">
     </a>
@@ -21,7 +21,8 @@
 @section('content')
     <script type="module" src="{{ asset('js/message-flash-auto.js') }}"></script>
     <script type="module" src="{{ asset('js/confirmation-suppression.js') }}"></script>
-    
+    <script src="{{ asset('js/back-navigation.js') }}"></script>
+
     <!-- Titre de la page en fonction de l'origine (Cellier ou Catalogue) -->
     <div class="px-3 pt-4 pb-28">
         <h2 class="mb-3 text-center text-xl text-[#7A1E2E]" style="font-family: 'Roboto', sans-serif;">
