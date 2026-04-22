@@ -2,6 +2,7 @@
 @section('title', 'Connexion')
 @section('content')
 <script type="module" src="{{ asset('js/message-flash-auto.js') }}"></script>
+<script type="module" src="{{ asset('js/password-toggle.js') }}"></script>
 
 <div class="h-[calc(100vh-90px)] flex flex-col items-center justify-center py-6 px-4 sm:px-6 lg:px-8 pb-24">
     @if(session('success'))
@@ -21,13 +22,32 @@
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                         @enderror
                 </div>
-                <div>
-                        <label id="mot_de_passe" for="mot_de_passe" class="block mb-1 text-sm font-medium text-[#1A1A1A]">Mot de passe</label>
+                <div class="relative">
+                    <label for="mot_de_passe" class="block mb-1 text-sm font-medium text-[#1A1A1A]">
+                        Mot de passe
+                    </label>
+
+                    <div class="relative">
                         <input type="password" id="mot_de_passe" name="mot_de_passe" 
-                                class="w-full border-2 p-2 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#A83248] focus:border-[#A83248] @error ('mot_de_passe') border-red-600 @enderror" placeholder="••••••••••••••••" required>
-                        @error('mot_de_passe')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
+                            class="w-full border-2 p-2 pr-10 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#A83248] focus:border-[#A83248] @error ('mot_de_passe') border-red-600 @enderror"
+                            placeholder="••••••••••••••••" required>
+
+                        <!-- Eye button -->
+                        <button type="button"
+                            class="absolute right-3 top-1/2 -translate-y-1/2"
+                            data-toggle-password
+                            data-target="mot_de_passe">
+
+                            <img src="{{ asset('images/symbole/oeil-ferme.svg') }}"
+                                alt="Afficher le mot de passe"
+                                class="w-5 h-5"
+                                data-eye-icon>
+                        </button>
+                    </div>
+
+                    @error('mot_de_passe')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
                 <!-- <div class="flex justify-end my-3">
                     <a href="#" class="text-sm text-gray-500 underline">Mot de passe oublié?</a>
