@@ -1,6 +1,12 @@
 @extends('layouts.main')
 @section('title', 'caveo')
 
+@section('deconnexion')
+<a href="{{ route('deconnexion') }}" class="text-white text-2xl leading-none" aria-label="Deconnexion">
+    <img src="/images/icons/deconnexion-blanc.svg" alt="Deconnexion" class="w-8 h-8">
+</a>
+@endsection
+
 @section('content')
 
 <script type="module" src="{{ asset('js/filtre.js') }}"></script>
