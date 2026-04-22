@@ -61,7 +61,7 @@
                 <span>|</span>
                 @endif
 
-                <p>{{ $cellier->inventaires_count ?? 0 }} bouteille(s)</p>
+                <p>{{ $cellier->inventaires_sum_quantite ?? 0 }} bouteille(s)</p>
             </div>
 
             @if(!empty($cellier->description))

@@ -27,7 +27,7 @@ class CellierController extends Controller
     {
         $utilisateur = Auth::user();
 
-        $celliers = Cellier::withCount('inventaires')
+        $celliers = Cellier::withSum('inventaires', 'quantite')
             ->where('id_utilisateur', $utilisateur->id)
             ->orderBy('nom')
             ->get();
