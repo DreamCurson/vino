@@ -151,6 +151,7 @@
 <div class="m-4 message-flash-auto">
     <x-alerts />
 </div>
+<div id="ajax-flash-container" class="m-4"></div>
 
 <div class="m-3 text-sm">
 
@@ -207,8 +208,6 @@
     <p></p>
     @endif
 </div>
-
-<div id="ajax-flash-container" class="m-4"></div>
 
 @if($bouteilles->isEmpty())
 <div class="mt-[30px] mb-[30px] ml-4 mr-4 p-4 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded text-center">
