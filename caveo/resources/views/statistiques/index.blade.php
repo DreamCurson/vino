@@ -38,7 +38,9 @@
                             </div>
                             <span>{{ $rouge }} ({{ round($pourcentageRouge) }}%)</span>
                         </div>
-                            <div class="w-full h-px bg-gray-300"></div>
+                            @if($blanc > 0 || $rose > 0 || $autres > 0)
+                                <div class="w-full h-px bg-gray-300"></div>
+                            @endif
                         @endif
                         @if($blanc > 0)
                         <div class="flex items-center justify-between">
@@ -48,7 +50,9 @@
                             </div>
                             <span>{{ $blanc }} ({{ round($pourcentageBlanc) }}%)</span>
                         </div>
-                            <div class="w-full h-px bg-gray-300"></div>
+                            @if($rose > 0 || $autres > 0)
+                                <div class="w-full h-px bg-gray-300"></div>
+                            @endif
                         @endif
                         @if($rose > 0)
                         <div class="flex items-center justify-between">
@@ -58,7 +62,9 @@
                             </div>
                             <span>{{ $rose }} ({{ round($pourcentageRose) }}%)</span>
                         </div>
-                            <div class="w-full h-px bg-gray-300"></div>
+                            @if($autres > 0)
+                                <div class="w-full h-px bg-gray-300"></div>
+                            @endif
                         @endif
                         @if($autres > 0)
                         <div class="flex items-center justify-between">
