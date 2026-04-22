@@ -8,12 +8,12 @@
 @endsection
     <script type="module" src="{{ asset('js/message-flash-auto.js') }}"></script>
 
-    <div class="h-[calc(100vh-90px)] py-6 px-4 sm:px-6 lg:px-8 pb-24">
+    <div class="min-h-[calc(100vh-90px)] flex flex-col py-6 px-4 sm:px-6 lg:px-8 pb-24">
         <h1 class="text-3xl text-[#7A1E2E] text-center" style="font-family: 'Crimson Text', serif;">Modifier mon profil</h1>
         @if(session('success'))
         <x-alerts />
         @endif
-        <form method="POST" action="{{ route('profil.update') }}">
+        <form method="POST" action="{{ route('profil.update') }}" class="flex flex-col flex-1">
             @csrf
             <h3 class="text-xl font-medium mt-1">Informations personnelles</h3>
             <div class="border rounded-lg shadow p-2 bg-white">
@@ -63,7 +63,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex justify-center mt-8">
+                <div class="flex justify-center mt-auto pt-6">
                     <button type="submit" 
                             class="w-2/5 max-w-xs p-1 flex items-center justify-center border bg-[#A83248] border-[#A83248]  text-white rounded-md shadow">
                         Sauvegarder
