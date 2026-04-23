@@ -160,7 +160,7 @@
                     @endif
 
                     <div class="text-center">
-                        <span class="text-2xl font-semibold">
+                        <span class="w-10 text-center font-bold tabular-nums">
                             {{ $inventaire->quantite }}
                         </span>
                     </div>
