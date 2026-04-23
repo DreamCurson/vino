@@ -15,12 +15,12 @@
 <section class="min-h-[calc(100vh-140px)] bg-[#F8F5F1] flex items-center justify-center px-6 py-10">
     <div class="w-full max-w-xl mx-auto text-center font-roboto">
 
-        <div class="mb-8">
+        <!-- <div class="mb-8">
             <h1 class="text-5xl sm:text-6xl tracking-tight text-[#7A1E2E]"
                 style="font-family: 'Crimson Text', serif;">
                 Caveo
             </h1>
-        </div>
+        </div> -->
 
         <div class="mb-10">
             <p class="text-4xl sm:text-6xl leading-[0.95] tracking-tight text-[#1A1A1A] font-semibold">

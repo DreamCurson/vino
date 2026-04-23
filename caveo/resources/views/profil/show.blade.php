@@ -10,7 +10,7 @@
 
 <div class="min-h-[calc(100vh-90px)] overflow-hidden flex flex-col py-6 px-4 sm:px-6 lg:px-8 pb-24">
     <div>
-        <h1 class="text-3xl text-[#7A1E2E] text-center " style="font-family: 'Crimson Text', serif;">Mon Profil</h1>
+        <h1 class="text-3xl text-[#7A1E2E]" style="font-family: 'Crimson Text', serif;">Mon Profil</h1>
         <x-alerts />
         <div>
             <h3 class="text-xl font-medium mt-3">Mes Informations</h3>
